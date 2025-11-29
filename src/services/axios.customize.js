@@ -23,9 +23,13 @@ instance.interceptors.response.use(function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
     if (response && response.data) {
-        return response.data
+        // Nếu response.data tồn tại, trả về nó
+        return response.data;
+    } else if (Array.isArray(response)) {
+        // Nếu response là mảng trực tiếp (trường hợp backend trả mảng), trả về response
+        return response;
     }
-    return response;
+    return response; // Fallback chung
 }, function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
