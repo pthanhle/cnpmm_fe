@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, Typography, Spin, Statistic, Row, Col, Divider, DatePicker, Button } from 'antd';
 import { DollarCircleOutlined, AreaChartOutlined, BarChartOutlined } from '@ant-design/icons';
 import { useOrders } from './hooks/useOrders';
-import { formatCurrency } from '../../utils/format';
+import { formatCurrency } from '../../shared/utils/format';
 import PageHeaderAction from '../../components/molecules/PageHeaderAction';
 import { OrderTable, RevenueReport, OrderModal } from './components';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, Button, Tooltip, Tag, Space } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import { PROJECT_STATUS_COLOR, PROJECT_STATUS_LABEL } from '../../../constants';
+import { PROJECT_STATUS_COLOR, PROJECT_STATUS_LABEL } from '../../../shared/constants';
 
 const ProjectTable = ({ projects, loading, onEdit, onDelete }) => {
 

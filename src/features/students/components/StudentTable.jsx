@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, Button, Tooltip, Tag } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import { formatDate } from '../../../utils/format';
+import { formatDate } from '../../../shared/utils/format';
 
 const StudentTable = ({ students, loading, onEdit, onDelete }) => {
     const columns = [

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card, Typography, Spin, Select, Button } from 'antd';
 import { useProjects } from './hooks/useProjects';
 import PageHeaderAction from '../../components/molecules/PageHeaderAction';
-import { PROJECT_STATUS_LABEL, PROJECT_STATUS } from '../../constants';
+import { PROJECT_STATUS_LABEL, PROJECT_STATUS } from '../../shared/constants';
 import { ProjectTable, ProjectStats, ProjectModal } from './components';
 
 const { Title } = Typography;

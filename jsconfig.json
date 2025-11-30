@@ -15,16 +15,16 @@
                 "src/features/*"
             ],
             "@hooks/*": [
-                "src/hooks/*"
+                "src/shared/hooks/*"
             ],
             "@pages/*": [
                 "src/pages/*"
             ],
             "@utils/*": [
-                "src/utils/*"
+                "src/shared/utils/*"
             ],
             "@constants/*": [
-                "src/constants/*"
+                "src/shared/constants/*"
             ]
         }
     },

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, Layout } from 'antd';
 import ThemeToggle from '../atoms/ThemeToggle';
-import { useTheme } from '@/context/ThemeContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import LanguageSwitch from '../atoms/LanguageSwitch';
 
 const { Header: AntHeader } = Layout;

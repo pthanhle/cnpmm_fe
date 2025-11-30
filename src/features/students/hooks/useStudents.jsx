@@ -9,7 +9,7 @@ import {
     searchStudents,
     getStudentStats
 } from '../../../api/students';
-import { useDebounce } from '../../../hooks/useDebounce';
+import { useDebounce } from '../../../shared/hooks/useDebounce';
 
 export const useStudents = () => {
     const queryClient = useQueryClient();
