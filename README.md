@@ -1,26 +1,22 @@
-🛠 Tech Stack
-Core: React 18, Vite.
+🛠 **Tech Stack**  
+Core: React 18, Vite  
+State Management & Data Fetching: TanStack Query (React Query)  
+Styling: Tailwind CSS, Ant Design (Antd)  
+Routing: React Router DOM v6  
+Internationalization: i18next, react-i18next  
+HTTP Client: Axios (with custom Interceptors)
 
-State Management & Data Fetching: TanStack Query (React Query).
-
-Styling: Tailwind CSS, Ant Design (Antd).
-
-Routing: React Router DOM v6.
-
-Internationalization: i18next, react-i18next.
-
-HTTP Client: Axios (with custom Interceptors).
-
-📂 Project Structure
+📂 **Project Structure**  
 The project follows a Feature-based structure, encapsulating logic within specific features to allow for easy addition or removal of modules without affecting the entire system.
 
+```bash
 src
 ├── api                         # SERVER COMMUNICATION LAYER (Domain-Driven)
 │   ├── config                  # Axios instance config (Interceptors, BaseURL)
 │   ├── employees               # Dedicated API for Employees module
 │   │   ├── endpoints.js        # URL definitions (Constants)
 │   │   └── index.js            # Actual API calling functions
-│   ├── ...                     # (Similar structure for orders, projects, students)
+│   └── ...                     # (Similar structure for orders, projects, students)
 │
 ├── assets                      # Static assets (Images, Fonts, Icons)
 │
@@ -40,7 +36,7 @@ src
 │   │   ├── components          # Module-specific UI (Table, Modal)
 │   │   ├── hooks               # Business Logic & React Query (useEmployees)
 │   │   └── index.jsx           # Entry point (Container Component)
-│   ├── ...                     # (Similar structure for other modules)
+│   └── ...                     # (Similar structure for other modules)
 │
 ├── hooks                       # GLOBAL HOOKS (Shared across app)
 │   └── useDebounce.js          # Performance optimization hook for search
