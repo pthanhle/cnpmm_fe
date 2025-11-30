@@ -1,108 +1,65 @@
-```
-├── public
-├── src
-│   ├── api
-│   │   ├── config
-│   │   │   └── axiosClient.js
-│   │   ├── employees
-│   │   │   ├── endpoints.js
-│   │   │   └── index.js
-│   │   ├── orders
-│   │   │   ├── endpoints.js
-│   │   │   └── index.js
-│   │   ├── projects
-│   │   │   ├── endpoints.js
-│   │   │   └── index.js
-│   │   └── students
-│   │       ├── endpoints.js
-│   │       └── index.js
-│   ├── assets
-│   ├── components
-│   │   ├── atoms
-│   │   │   ├── LanguageSwitch.jsx
-│   │   │   ├── Loading.jsx
-│   │   │   └── ThemeToggle.jsx
-│   │   ├── layout
-│   │   │   ├── Footer.jsx
-│   │   │   └── Header.jsx
-│   │   ├── molecules
-│   │   │   └── PageHeaderAction.jsx
-│   │   ├── organisms
-│   │   └── templates
-│   │       └── MainLayout.jsx
-│   ├── constants
-│   │   └── index.js
-│   ├── context
-│   │   └── ThemeContext.jsx
-│   ├── features
-│   │   ├── employees
-│   │   │   ├── components
-│   │   │   │   ├── EmployeeModal.jsx
-│   │   │   │   ├── EmployeeTable.jsx
-│   │   │   │   └── index.jsx
-│   │   │   ├── hooks
-│   │   │   │   └── useEmployees.jsx
-│   │   │   └── index.jsx
-│   │   ├── orders
-│   │   │   ├── components
-│   │   │   │   ├── OrderModal.jsx
-│   │   │   │   ├── OrderTable.jsx
-│   │   │   │   ├── RevenueReport.jsx
-│   │   │   │   └── index.jsx
-│   │   │   ├── hooks
-│   │   │   │   └── useOrders.jsx
-│   │   │   └── index.jsx
-│   │   ├── projects
-│   │   │   ├── components
-│   │   │   │   ├── ProjectModal.jsx
-│   │   │   │   ├── ProjectStats.jsx
-│   │   │   │   ├── ProjectTable.jsx
-│   │   │   │   └── index.jsx
-│   │   │   ├── hooks
-│   │   │   │   └── useProjects.jsx
-│   │   │   └── index.jsx
-│   │   └── students
-│   │       ├── components
-│   │       │   ├── StudentModal.jsx
-│   │       │   ├── StudentStats.jsx
-│   │       │   ├── StudentTable.jsx
-│   │       │   └── index.jsx
-│   │       ├── hooks
-│   │       │   └── useStudents.jsx
-│   │       └── index.jsx
-│   ├── hooks
-│   │   └── useDebounce.js
-│   ├── i18n
-│   │   └── i18n.js
-│   ├── locales
-│   │   ├── en
-│   │   │   ├── common.json
-│   │   │   └── students.json
-│   │   └── vi
-│   │       ├── common.json
-│   │       └── students.json
-│   ├── pages
-│   │   ├── EmployeePage.jsx
-│   │   ├── Home.jsx
-│   │   ├── NotFound.jsx
-│   │   ├── OrderPage.jsx
-│   │   ├── ProjectPage.jsx
-│   │   └── StudentPage.jsx
-│   ├── styles
-│   │   └── globals.css
-│   ├── utils
-│   │   ├── format.js
-│   │   └── validate.js
-│   ├── main.jsx
-│   └── router.jsx
-├── .gitignore
-├── README.md
-├── eslint.config.js
-├── index.html
-├── jsconfig.json
-├── package-lock.json
-├── package.json
-├── tailwind.config.js
-├── vite-env.d.ts
-└── vite.config.js
-```
+🛠 Tech Stack
+Core: React 18, Vite.
+
+State Management & Data Fetching: TanStack Query (React Query).
+
+Styling: Tailwind CSS, Ant Design (Antd).
+
+Routing: React Router DOM v6.
+
+Internationalization: i18next, react-i18next.
+
+HTTP Client: Axios (with custom Interceptors).
+
+📂 Project Structure
+The project follows a Feature-based structure, encapsulating logic within specific features to allow for easy addition or removal of modules without affecting the entire system.
+
+src
+├── api                         # SERVER COMMUNICATION LAYER (Domain-Driven)
+│   ├── config                  # Axios instance config (Interceptors, BaseURL)
+│   ├── employees               # Dedicated API for Employees module
+│   │   ├── endpoints.js        # URL definitions (Constants)
+│   │   └── index.js            # Actual API calling functions
+│   ├── ...                     # (Similar structure for orders, projects, students)
+│
+├── assets                      # Static assets (Images, Fonts, Icons)
+│
+├── components                  # SHARED UI COMPONENTS (Atomic Design)
+│   ├── atoms                   # Smallest units (Loading, Toggle, Button...)
+│   ├── molecules               # Groups of atoms (PageHeaderAction - Search + Filter)
+│   ├── organisms               # Complex sections (Sidebar, Navbar)
+│   └── templates               # Layout skeletons (MainLayout)
+│
+├── constants                   # Global constants (Config, Enums, Status Codes)
+│
+├── context                     # GLOBAL STATE (Theme, Auth, etc.)
+│   └── ThemeContext.jsx        # Manages Dark/Light mode & Antd ConfigProvider
+│
+├── features                    # LOGIC HUB (Feature-Sliced Design)
+│   ├── employees               # Employee Module
+│   │   ├── components          # Module-specific UI (Table, Modal)
+│   │   ├── hooks               # Business Logic & React Query (useEmployees)
+│   │   └── index.jsx           # Entry point (Container Component)
+│   ├── ...                     # (Similar structure for other modules)
+│
+├── hooks                       # GLOBAL HOOKS (Shared across app)
+│   └── useDebounce.js          # Performance optimization hook for search
+│
+├── i18n                        # Internationalization configuration
+├── locales                     # Translation JSON files (split by feature: en/vi)
+│
+├── pages                       # PAGE WRAPPERS (Lazy Load Targets)
+│   ├── EmployeePage.jsx        # Wrapper calling the corresponding Feature Container
+│   └── ...
+│
+├── services                    # (Deprecated/Optional) Pure JS helper functions
+│
+├── styles                      # Global CSS & Tailwind directives
+│
+├── utils                       # UTILITY HELPERS
+│   ├── format.js               # Formatters (Currency, Date: VNĐ, DD/MM/YYYY)
+│   └── validate.js             # Data validation helpers
+│
+├── layout.jsx                  # (Legacy) Moved to components/templates
+├── router.jsx                  # Route Configuration & Lazy Loading setup
+└── main.jsx                    # App Entry Point & Providers setup
