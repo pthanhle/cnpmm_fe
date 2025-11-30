@@ -1,0 +1,21 @@
+{
+    "button": {
+        "add": "Add New",
+        "edit": "Edit",
+        "delete": "Delete",
+        "save": "Save",
+        "cancel": "Cancel",
+        "search": "Search"
+    },
+    "message": {
+        "success": "Operation successful",
+        "error": "Something went wrong"
+    },
+    "menu": {
+        "home": "Home",
+        "students": "Students",
+        "projects": "Projects",
+        "orders": "Orders",
+        "employees": "Employees"
+    }
+}

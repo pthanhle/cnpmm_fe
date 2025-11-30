@@ -1,0 +1,21 @@
+{
+    "button": {
+        "add": "Thêm Mới",
+        "edit": "Sửa",
+        "delete": "Xóa",
+        "save": "Lưu",
+        "cancel": "Hủy",
+        "search": "Tìm kiếm"
+    },
+    "message": {
+        "success": "Thao tác thành công",
+        "error": "Có lỗi xảy ra"
+    },
+    "menu": {
+        "home": "Trang Chủ",
+        "students": "Sinh Viên",
+        "projects": "Dự Án",
+        "orders": "Đơn Hàng",
+        "employees": "Nhân Viên"
+    }
+}

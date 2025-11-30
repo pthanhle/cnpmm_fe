@@ -3,3 +3,43 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Thiết lập màu nền chuyển đổi mượt mà */
+html,
+body,
+#root {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    @apply transition-colors duration-300;
+    /* Light Mode: Xám nhạt | Dark Mode: Đen xám (Gray 900) */
+    @apply bg-gray-100 text-gray-900;
+}
+
+/* Khi có class 'dark' ở thẻ html */
+.dark body {
+    @apply bg-[#141414] text-gray-100;
+    /* #141414 là màu nền chuẩn của Ant Design Dark */
+}
+
+/* Tùy chỉnh thanh cuộn cho đẹp khi ở Dark Mode */
+.dark ::-webkit-scrollbar {
+    width: 8px;
+}
+
+.dark ::-webkit-scrollbar-track {
+    background: #1f1f1f;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: #434343;
+    border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background: #595959;
+}
