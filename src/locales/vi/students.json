@@ -1,8 +1,0 @@
-{
-    "title": "Quản Lý Sinh Viên",
-    "fields": {
-        "id": "Mã SV",
-        "name": "Họ và Tên",
-        "gpa": "Điểm TB"
-    }
-}

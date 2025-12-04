@@ -1,21 +1,9 @@
-// src/components/molecules/PageHeaderAction.jsx
 import React from 'react';
 import { Input, Button } from 'antd';
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons';
 
-/**
- * @param {string} searchTerm 
- * @param {function} setSearchTerm 
- * @param {function} onSearch 
- * @param {function} onAdd 
- * @param {string} placeholder 
- * @param {string} btnLabel 
- * @param {ReactNode} children 
- */
 const PageHeaderAction = ({
-    searchTerm,
-    setSearchTerm,
-    onSearch,
+    searchTerm, setSearchTerm, onSearch,
     onAdd,
     placeholder = "Tìm kiếm...",
     btnLabel = "Thêm Mới",
@@ -27,26 +15,26 @@ const PageHeaderAction = ({
                 <Input
                     placeholder={placeholder}
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    onPressEnter={onSearch}
+                    onChange={setSearchTerm}
                     prefix={<SearchOutlined className="text-gray-400" />}
                     allowClear
                     size="large"
                     style={{ maxWidth: 300 }}
                 />
-
                 {children}
             </div>
 
-            <Button
-                type="primary"
-                size="large"
-                icon={<PlusOutlined />}
-                onClick={onAdd}
-                className="shadow-md ml-auto"
-            >
-                {btnLabel}
-            </Button>
+            {onAdd && (
+                <Button
+                    type="primary"
+                    size="large"
+                    icon={<PlusOutlined />}
+                    onClick={onAdd}
+                    className="shadow-md ml-auto"
+                >
+                    {btnLabel}
+                </Button>
+            )}
         </div>
     );
 };

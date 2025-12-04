@@ -1,42 +1,38 @@
-import axios from "axios";
+import axios from 'axios';
 
-const instance = axios.create({
-    baseURL: import.meta.env.VITE_BACKEND_URL,
-    withCredentials: true
+const axiosClient = axios.create({
+    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api',
+    headers: {
+        'Content-Type': 'application/json',
+    },
 });
 
-// Add a request interceptor
-instance.interceptors.request.use(function (config) {
-    // Do something before request is sent
-    const token = localStorage.getItem("access_token")
-    const auth = token ? `Bearer ${token}` : ''
-    config.headers.Authorization = auth;
+axiosClient.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('access_token');
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => Promise.reject(error)
+);
 
-    return config;
-}, function (error) {
-    // Do something with request error
-    return Promise.reject(error);
-});
-
-// Add a response interceptor
-instance.interceptors.response.use(function (response) {
-    // Any status code that lie within the range of 2xx cause this function to trigger
-    // Do something with response data
-    if (response && response.data) {
-        // Nếu response.data tồn tại, trả về nó
-        return response.data;
-    } else if (Array.isArray(response)) {
-        // Nếu response là mảng trực tiếp (trường hợp backend trả mảng), trả về response
+// Interceptor Response
+axiosClient.interceptors.response.use(
+    (response) => {
+        if (response && response.data) {
+            return response.data;
+        }
         return response;
+    },
+    (error) => {
+        if (error.response && error.response.status === 401) {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('user_info');
+        }
+        return Promise.reject(error);
     }
-    return response; // Fallback chung
-}, function (error) {
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
-    // Do something with response error
-    if (error && error.response && error.response.data) {
-        return error.response.data
-    }
-    return Promise.reject(error);
-});
+);
 
-export default instance;
+export default axiosClient;

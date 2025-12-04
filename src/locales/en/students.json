@@ -1,8 +1,0 @@
-{
-    "title": "Student Management",
-    "fields": {
-        "id": "Student ID",
-        "name": "Full Name",
-        "gpa": "GPA"
-    }
-}

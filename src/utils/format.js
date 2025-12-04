@@ -1,29 +1,11 @@
-// src/utils/format.js
 import dayjs from 'dayjs';
-import { DATE_FORMAT, CURRENCY_CONFIG } from '../constants';
 
-/**
- *
- * @param {number} amount
- * @returns {string}
- */
 export const formatCurrency = (amount) => {
-    if ((!amount && amount !== 0) || isNaN(amount)) return '0 VNĐ';
-    return amount.toLocaleString(CURRENCY_CONFIG.locale) + ' VNĐ';
+    if ((!amount && amount !== 0) || isNaN(amount)) return '0 ₫';
+    return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
 };
 
-/**
- * @param {string|Date} date
- * @param {string} format
- * @returns {string}
- */
-export const formatDate = (date, format = DATE_FORMAT) => {
+export const formatDate = (date, format = 'DD/MM/YYYY') => {
     if (!date) return '';
     return dayjs(date).format(format);
-};
-
-
-export const capitalizeFirstLetter = (string) => {
-    if (!string) return '';
-    return string.charAt(0).toUpperCase() + string.slice(1);
 };

@@ -1,120 +1,125 @@
 import React from 'react';
-import { Card, Typography, Row, Col, Button, Avatar } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
+import { Card, Typography, Row, Col, Button, Tag, Statistic } from 'antd';
+import { useNavigate } from 'react-router-dom';
 import {
-    TeamOutlined,
-    ProjectOutlined,
-    ShoppingCartOutlined,
-    IdcardOutlined,
-    ArrowRightOutlined
+    CompassOutlined, GlobalOutlined, ScheduleOutlined,
+    SafetyCertificateOutlined, ArrowRightOutlined, RocketOutlined, UserOutlined
 } from '@ant-design/icons';
+import { useAuth } from '@/context/AuthContext';
 
 const { Title, Paragraph } = Typography;
 
 const Home = () => {
     const navigate = useNavigate();
+    const { user } = useAuth();
 
-    const modules = [
+    const features = [
         {
-            id: 1,
-            title: "Bài 1: Quản Lý Sinh Viên",
-            description: "Thêm, sửa, xóa, tìm kiếm sinh viên và thống kê điểm GPA chuyên ngành.",
-            path: "/bai1/students",
-            icon: <TeamOutlined />,
-            color: "#1890ff",
-            bgColor: "#e6f7ff"
+            id: 'explore',
+            title: "Khám Phá Tour",
+            desc: "Tìm kiếm và đặt các tour du lịch trong và ngoài nước với giá ưu đãi nhất.",
+            path: "/tours",
+            icon: <CompassOutlined />,
+            color: "#1890ff", bgColor: "#e6f7ff", darkBg: "#111d2c",
+            role: 'all'
         },
         {
-            id: 2,
-            title: "Bài 2: Quản Lý Dự Án",
-            description: "Theo dõi tiến độ dự án, trạng thái hoạt động và nhân sự tham gia.",
-            path: "/bai2/projects",
-            icon: <ProjectOutlined />,
-            color: "#722ed1",
-            bgColor: "#f9f0ff"
+            id: 'admin-tours',
+            title: "Quản Lý Tour",
+            desc: "Dành cho Admin: Thêm mới, cập nhật giá, lịch trình và quản lý trạng thái.",
+            path: "/admin/tours",
+            icon: <GlobalOutlined />,
+            color: "#722ed1", bgColor: "#f9f0ff", darkBg: "#22075e",
+            role: 'admin'
         },
         {
-            id: 3,
-            title: "Bài 3: Quản Lý Đơn Hàng",
-            description: "Kiểm soát đơn hàng, tính toán tổng giá trị và báo cáo doanh thu.",
-            path: "/bai3/orders",
-            icon: <ShoppingCartOutlined />,
-            color: "#52c41a",
-            bgColor: "#f6ffed"
-        },
-        {
-            id: 4,
-            title: "Bài 4: Quản Lý Nhân Viên",
-            description: "Hồ sơ nhân sự, chức vụ, phòng ban và tính toán lương thưởng.",
-            path: "/bai4/employees",
-            icon: <IdcardOutlined />,
-            color: "#fa8c16",
-            bgColor: "#fff7e6"
+            id: 'admin-bookings',
+            title: "Quản Lý Đơn Hàng",
+            desc: "Dành cho Admin: Theo dõi booking, xác nhận thanh toán và báo cáo doanh thu.",
+            path: "/admin/bookings",
+            icon: <ScheduleOutlined />,
+            color: "#52c41a", bgColor: "#f6ffed", darkBg: "#135200",
+            role: 'admin'
         }
     ];
 
+    const visibleFeatures = features.filter(f =>
+        f.role === 'all' || (f.role === 'admin' && user?.role === 'admin')
+    );
+
     return (
-        <div className="p-8 bg-gray-50 min-h-screen">
+        <div className="p-8 bg-gray-50 dark:bg-[#141414] min-h-screen transition-colors duration-300">
             <div className="max-w-7xl mx-auto">
-                {/* Header Section */}
-                <div className="text-center mb-10">
-                    <Title level={2} style={{ color: '#1f2937', marginBottom: '0.5rem' }}>
-                        Bài tập Công Nghệ Phần Mềm Mới
+                <div className="text-center mb-16 pt-10">
+                    <div className="inline-block mb-4">
+                        <div className="mb-6">
+                            {user ? (
+                                <h1 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white m-0">
+                                    Xin chào, <span className="text-blue-600">{user.name}</span>
+                                </h1>
+                            ) : (
+                                <Tag color="blue" className="px-3 py-1 text-sm rounded-full">
+                                    Chào mừng đến với Travel App
+                                </Tag>
+                            )}
+                        </div>
+                    </div>
+                    <Title className="!text-5xl !font-extrabold !text-gray-900 dark:!text-white mb-6">
+                        Trải Nghiệm Du Lịch Đẳng Cấp
                     </Title>
-                    <Paragraph type="secondary" style={{ fontSize: '1.1rem' }}>
-                        Chọn một module bên dưới để bắt đầu
+                    <Paragraph className="text-xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
+                        Hệ thống quản lý và đặt tour trực tuyến hiện đại, nhanh chóng và an toàn.
                     </Paragraph>
                 </div>
 
-                {/* Modules Grid */}
-                <Row gutter={[24, 24]}>
-                    {modules.map((module) => (
-                        <Col xs={24} sm={12} lg={6} key={module.id}>
+                <Row gutter={[32, 32]} className="mb-20">
+                    {visibleFeatures.map((feature) => (
+                        <Col xs={24} md={visibleFeatures.length === 1 ? 24 : 12} lg={visibleFeatures.length === 1 ? 24 : 8} key={feature.id}>
                             <Card
                                 hoverable
-                                className="h-full flex flex-col justify-between shadow-sm hover:shadow-lg transition-shadow duration-300 border-t-4"
-                                style={{ borderTopColor: module.color }}
-                                bodyStyle={{ padding: '24px', display: 'flex', flexDirection: 'column', height: '100%' }}
+                                className="h-full border-0 shadow-lg dark:bg-[#1f1f1f] transition-transform hover:-translate-y-1"
+                                bodyStyle={{ padding: '32px', display: 'flex', flexDirection: 'column', height: '100%' }}
                             >
-                                <div className="flex-grow">
-                                    {/* Icon Area */}
-                                    <div
-                                        className="w-16 h-16 rounded-full flex items-center justify-center mb-4 text-3xl"
-                                        style={{ backgroundColor: module.bgColor, color: module.color }}
-                                    >
-                                        {module.icon}
+                                <div
+                                    className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-3xl transition-colors"
+                                    style={{ backgroundColor: feature.bgColor, color: feature.color }}
+                                >
+                                    <style>{`.dark .card-icon-${feature.id} { background-color: ${feature.darkBg} !important; }`}</style>
+                                    <div className={`w-full h-full flex items-center justify-center rounded-2xl card-icon-${feature.id}`}>
+                                        {feature.icon}
                                     </div>
-
-                                    {/* Content Area */}
-                                    <Title level={4} style={{ marginBottom: '12px' }}>
-                                        {module.title}
-                                    </Title>
-                                    <Paragraph type="secondary" className="mb-6">
-                                        {module.description}
-                                    </Paragraph>
                                 </div>
-
-                                {/* Action Area */}
-                                <div className="mt-4 pt-4 border-t border-gray-100">
-                                    <Button
-                                        type="primary"
-                                        ghost
-                                        block
-                                        icon={<ArrowRightOutlined />}
-                                        style={{
-                                            borderColor: module.color,
-                                            color: module.color
-                                        }}
-                                        onClick={() => navigate(module.path)}
-                                        className="hover:!bg-gray-50"
-                                    >
-                                        Truy Cập Ngay
-                                    </Button>
-                                </div>
+                                <Title level={3} className="!mb-3 !text-gray-800 dark:!text-white">{feature.title}</Title>
+                                <Paragraph className="text-gray-500 dark:text-gray-400 text-base mb-8 flex-grow">{feature.desc}</Paragraph>
+                                <Button
+                                    type="primary" ghost size="large"
+                                    className="w-full mt-auto flex items-center justify-center gap-2 group"
+                                    style={{ borderColor: feature.color, color: feature.color }}
+                                    onClick={() => navigate(feature.path)}
+                                >
+                                    Truy Cập Ngay <ArrowRightOutlined className="group-hover:translate-x-1 transition-transform" />
+                                </Button>
                             </Card>
                         </Col>
                     ))}
                 </Row>
+
+                <div className="bg-white dark:bg-[#1f1f1f] rounded-3xl p-10 shadow-sm border border-gray-100 dark:border-gray-800">
+                    <Row gutter={[48, 48]} justify="center">
+                        <Col xs={24} md={8} className="text-center border-r border-gray-100 dark:border-gray-700 last:border-0">
+                            <RocketOutlined className="text-4xl text-blue-500 mb-4" />
+                            <Statistic title={<span className="text-gray-500 dark:text-gray-400 text-base">Điểm Đến</span>} value={50} suffix="+" valueStyle={{ fontWeight: 'bold', fontSize: '2.5rem' }} className="dark:text-white" />
+                        </Col>
+                        <Col xs={24} md={8} className="text-center border-r border-gray-100 dark:border-gray-700 last:border-0">
+                            <UserOutlined className="text-4xl text-green-500 mb-4" />
+                            <Statistic title={<span className="text-gray-500 dark:text-gray-400 text-base">Khách Hàng</span>} value={1200} suffix="+" valueStyle={{ fontWeight: 'bold', fontSize: '2.5rem' }} />
+                        </Col>
+                        <Col xs={24} md={8} className="text-center">
+                            <SafetyCertificateOutlined className="text-4xl text-orange-500 mb-4" />
+                            <Statistic title={<span className="text-gray-500 dark:text-gray-400 text-base">Đánh Giá</span>} value={4.9} suffix="/5" valueStyle={{ fontWeight: 'bold', fontSize: '2.5rem' }} />
+                        </Col>
+                    </Row>
+                </div>
             </div>
         </div>
     );
