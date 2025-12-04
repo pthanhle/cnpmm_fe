@@ -17,12 +17,12 @@ const Home = () => {
     const modules = [
         {
             id: 1,
-            title: "Bài 1: Quản Lý Sinh Viên",
-            description: "Thêm, sửa, xóa, tìm kiếm sinh viên và thống kê điểm GPA chuyên ngành.",
-            path: "/bai1/students",
-            icon: <TeamOutlined />,
-            color: "#1890ff",
-            bgColor: "#e6f7ff"
+            title: "Bài 1: Quản Lý Đơn Hàng",
+            description: "Kiểm soát đơn hàng, tính toán tổng giá trị và báo cáo doanh thu.",
+            path: "/bai1/orders",
+            icon: <ShoppingCartOutlined />,
+            color: "#52c41a",
+            bgColor: "#f6ffed"
         },
         {
             id: 2,
@@ -32,24 +32,6 @@ const Home = () => {
             icon: <ProjectOutlined />,
             color: "#722ed1",
             bgColor: "#f9f0ff"
-        },
-        {
-            id: 3,
-            title: "Bài 3: Quản Lý Đơn Hàng",
-            description: "Kiểm soát đơn hàng, tính toán tổng giá trị và báo cáo doanh thu.",
-            path: "/bai3/orders",
-            icon: <ShoppingCartOutlined />,
-            color: "#52c41a",
-            bgColor: "#f6ffed"
-        },
-        {
-            id: 4,
-            title: "Bài 4: Quản Lý Nhân Viên",
-            description: "Hồ sơ nhân sự, chức vụ, phòng ban và tính toán lương thưởng.",
-            path: "/bai4/employees",
-            icon: <IdcardOutlined />,
-            color: "#fa8c16",
-            bgColor: "#fff7e6"
         }
     ];
 

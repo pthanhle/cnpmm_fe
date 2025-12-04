@@ -28,8 +28,6 @@ export const PROJECT_STATUS_COLOR = {
 
 export const MENU_KEYS = {
     HOME: 'home',
-    STUDENTS: 'students',
     PROJECTS: 'projects',
     ORDERS: 'orders',
-    EMPLOYEES: 'employees'
 };

@@ -14,10 +14,8 @@ const Header = () => {
     const getSelectedKey = () => {
         const path = location.pathname;
         if (path === '/') return ['home'];
-        if (path.includes('/bai1/students')) return ['students'];
         if (path.includes('/bai2/projects')) return ['projects'];
         if (path.includes('/bai3/orders')) return ['orders'];
-        if (path.includes('/bai4/employees')) return ['employees'];
         return [];
     };
 
@@ -42,20 +40,13 @@ const Header = () => {
                 <Menu.Item key="home"><Link to="/">Home</Link></Menu.Item>
 
                 <Menu.SubMenu key="bai1" title="Bai 1">
-                    <Menu.Item key="students"><Link to="/bai1/students">Students</Link></Menu.Item>
+                    <Menu.Item key="orders"><Link to="/bai1/orders">Orders</Link></Menu.Item>
                 </Menu.SubMenu>
-
                 <Menu.SubMenu key="bai2" title="Bai 2">
                     <Menu.Item key="projects"><Link to="/bai2/projects">Projects</Link></Menu.Item>
                 </Menu.SubMenu>
 
-                <Menu.SubMenu key="bai3" title="Bai 3">
-                    <Menu.Item key="orders"><Link to="/bai3/orders">Orders</Link></Menu.Item>
-                </Menu.SubMenu>
 
-                <Menu.SubMenu key="bai4" title="Bai 4">
-                    <Menu.Item key="employees"><Link to="/bai4/employees">Employees</Link></Menu.Item>
-                </Menu.SubMenu>
             </Menu>
 
             <div className="ml-4 flex items-center gap-2">
