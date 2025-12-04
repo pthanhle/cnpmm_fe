@@ -8,6 +8,14 @@ export const CURRENCY_CONFIG = {
     currency: 'VND'
 };
 
+export const MENU_KEYS = {
+    HOME: 'home',
+    STUDENTS: 'students',
+    PROJECTS: 'projects',
+    ORDERS: 'orders',
+    EMPLOYEES: 'employees'
+};
+
 export const PROJECT_STATUS = {
     ONGOING: 'ongoing',
     COMPLETED: 'completed',
@@ -21,15 +29,7 @@ export const PROJECT_STATUS_LABEL = {
 };
 
 export const PROJECT_STATUS_COLOR = {
-    [PROJECT_STATUS.ONGOING]: 'processing',
-    [PROJECT_STATUS.COMPLETED]: 'success',
-    [PROJECT_STATUS.CANCELED]: 'error'
-};
-
-export const MENU_KEYS = {
-    HOME: 'home',
-    STUDENTS: 'students',
-    PROJECTS: 'projects',
-    ORDERS: 'orders',
-    EMPLOYEES: 'employees'
+    [PROJECT_STATUS.ONGOING]: 'processing', // Xanh dương (Antd)
+    [PROJECT_STATUS.COMPLETED]: 'success',  // Xanh lá
+    [PROJECT_STATUS.CANCELED]: 'error'      // Đỏ
 };

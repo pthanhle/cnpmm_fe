@@ -16,24 +16,36 @@ const OrderModal = ({ visible, onCancel, onSubmit, editingOrder }) => {
 
     return (
         <Modal
-            title={editingOrder ? 'Sửa Đơn Hàng' : 'Thêm Đơn Hàng'}
+            title={editingOrder ? 'Cập Nhật Đơn Hàng' : 'Tạo Đơn Hàng Mới'}
             open={visible}
             onCancel={onCancel}
             onOk={() => form.submit()}
+            okText={editingOrder ? "Lưu Thay Đổi" : "Tạo Mới"}
+            cancelText="Hủy"
         >
             <Form form={form} onFinish={onSubmit} layout="vertical">
-                <Form.Item name="orderId" label="Mã Đơn Hàng" rules={[{ required: true }]}>
-                    <Input disabled={!!editingOrder} />
+                <Form.Item name="orderId" label="Mã Đơn Hàng" rules={[{ required: true, message: 'Vui lòng nhập mã đơn' }]}>
+                    <Input disabled={!!editingOrder} placeholder="DH001" />
                 </Form.Item>
-                <Form.Item name="productName" label="Tên Sản Phẩm" rules={[{ required: true }]}>
-                    <Input />
+
+                <Form.Item name="productName" label="Tên Sản Phẩm" rules={[{ required: true, message: 'Vui lòng nhập tên sản phẩm' }]}>
+                    <Input placeholder="Laptop, Điện thoại..." />
                 </Form.Item>
-                <Form.Item name="quantity" label="Số Lượng" rules={[{ required: true }]}>
-                    <InputNumber min={1} style={{ width: '100%' }} />
-                </Form.Item>
-                <Form.Item name="price" label="Đơn Giá" rules={[{ required: true }]}>
-                    <InputNumber min={0} style={{ width: '100%' }} />
-                </Form.Item>
+
+                <div className="grid grid-cols-2 gap-4">
+                    <Form.Item name="quantity" label="Số Lượng" rules={[{ required: true, message: 'Nhập số lượng' }]}>
+                        <InputNumber min={1} style={{ width: '100%' }} />
+                    </Form.Item>
+
+                    <Form.Item name="price" label="Đơn Giá" rules={[{ required: true, message: 'Nhập đơn giá' }]}>
+                        <InputNumber
+                            min={0}
+                            style={{ width: '100%' }}
+                            formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                            parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                        />
+                    </Form.Item>
+                </div>
             </Form>
         </Modal>
     );

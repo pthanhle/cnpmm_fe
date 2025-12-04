@@ -14,9 +14,14 @@ const ProjectModal = ({ visible, onCancel, onSubmit, editingProject }) => {
                 const membersString = Array.isArray(editingProject.members)
                     ? editingProject.members.join(', ')
                     : '';
-                form.setFieldsValue({ ...editingProject, members: membersString });
+
+                form.setFieldsValue({
+                    ...editingProject,
+                    members: membersString
+                });
             } else {
                 form.resetFields();
+                form.setFieldsValue({ status: PROJECT_STATUS.ONGOING });
             }
         }
     }, [visible, editingProject, form]);
@@ -26,7 +31,13 @@ const ProjectModal = ({ visible, onCancel, onSubmit, editingProject }) => {
             const membersArray = values.members
                 ? values.members.split(',').map(m => m.trim()).filter(m => m !== '')
                 : [];
-            onSubmit({ ...values, members: membersArray });
+
+            const submitData = {
+                ...values,
+                members: membersArray
+            };
+
+            onSubmit(submitData);
         });
     };
 
@@ -36,18 +47,20 @@ const ProjectModal = ({ visible, onCancel, onSubmit, editingProject }) => {
             open={visible}
             onCancel={onCancel}
             onOk={handleOk}
-            okText={editingProject ? "Lưu Thay Đổi" : "Tạo Mới"}
+            okText={editingProject ? "Lưu" : "Tạo"}
             cancelText="Hủy"
         >
             <Form form={form} layout="vertical">
-                <Form.Item name="projectId" label="Mã Dự Án" rules={[{ required: true }]}>
-                    <Input disabled={!!editingProject} placeholder="Ví dụ: PRJ001" />
+                <Form.Item name="projectId" label="Mã Dự Án" rules={[{ required: true, message: 'Vui lòng nhập mã dự án' }]}>
+                    <Input disabled={!!editingProject} placeholder="PRJ001" />
                 </Form.Item>
-                <Form.Item name="name" label="Tên Dự Án" rules={[{ required: true }]}>
-                    <Input placeholder="Nhập tên dự án" />
+
+                <Form.Item name="name" label="Tên Dự Án" rules={[{ required: true, message: 'Vui lòng nhập tên dự án' }]}>
+                    <Input placeholder="Quản lý kho..." />
                 </Form.Item>
-                <Form.Item name="description" label="Mô Tả" rules={[{ required: true }]}>
-                    <TextArea rows={3} />
+
+                <Form.Item name="description" label="Mô Tả">
+                    <TextArea rows={3} placeholder="Mô tả chi tiết..." />
                 </Form.Item>
 
                 <Form.Item name="status" label="Trạng Thái" rules={[{ required: true }]}>
@@ -60,8 +73,12 @@ const ProjectModal = ({ visible, onCancel, onSubmit, editingProject }) => {
                     </Select>
                 </Form.Item>
 
-                <Form.Item name="members" label="Thành Viên (Phân cách bằng dấu phẩy)">
-                    <Input placeholder="Nguyễn Văn A, Trần Thị B" />
+                <Form.Item
+                    name="members"
+                    label="Thành Viên (Phân cách bằng dấu phẩy)"
+                    help="Ví dụ: Nguyễn Văn A, Trần Thị B"
+                >
+                    <Input placeholder="Nhập tên thành viên..." />
                 </Form.Item>
             </Form>
         </Modal>

@@ -31,7 +31,7 @@ const router = createBrowserRouter([
                 element: Loadable(StudentPage)
             },
             {
-                path: "bai2/projects",
+                path: "bai2/project",
                 element: Loadable(ProjectPage)
             },
             {
