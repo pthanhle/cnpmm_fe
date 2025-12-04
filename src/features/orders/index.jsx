@@ -2,9 +2,9 @@ import React from 'react';
 import { Card, Typography, Spin, Statistic, Row, Col, Divider, DatePicker, Button } from 'antd';
 import { DollarCircleOutlined, AreaChartOutlined, BarChartOutlined } from '@ant-design/icons';
 import { useOrders } from './hooks/useOrders';
-import { formatCurrency } from '../../shared/utils/format';
 import PageHeaderAction from '../../components/molecules/PageHeaderAction';
 import { OrderTable, RevenueReport, OrderModal } from './components';
+import { formatCurrency } from '@/utils/format';
 
 const { Title } = Typography;
 
@@ -29,7 +29,7 @@ const OrderFeature = () => {
                             <Statistic
                                 title={<span className="text-gray-500 font-semibold">Tổng Doanh Thu</span>}
                                 value={totalValue}
-                                formatter={val => formatCurrency(val)} // Dùng formatter của Statistic hoặc utils
+                                formatter={val => formatCurrency(val)}
                                 valueStyle={{ color: '#2563eb', fontWeight: 'bold', fontSize: '1.5rem' }}
                                 prefix={<DollarCircleOutlined className="mr-2" />}
                             />

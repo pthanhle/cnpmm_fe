@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, Button, Tooltip, Tag } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import { formatCurrency } from '../../../shared/utils/format';
+import { formatCurrency } from '@/utils/format';
 
 const OrderTable = ({ orders, loading, onEdit, onDelete }) => {
     const columns = [

@@ -10,7 +10,7 @@ import {
     searchEmployees,
     getEmployeeMonthlySalary
 } from '../../../api/employees';
-import { formatCurrency } from '../../../shared/utils/format';
+import { formatCurrency } from '@/utils/format';
 
 export const useEmployees = () => {
     const queryClient = useQueryClient();

@@ -9,7 +9,7 @@ import {
     searchStudents,
     getStudentStats
 } from '../../../api/students';
-import { useDebounce } from '../../../shared/hooks/useDebounce';
+import { useDebounce } from '@/hooks/useDebounce';
 
 export const useStudents = () => {
     const queryClient = useQueryClient();
@@ -17,10 +17,8 @@ export const useStudents = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editingStudent, setEditingStudent] = useState(null);
 
-    // 1. State nhập liệu (Thay đổi ngay lập tức khi gõ phím để UI mượt)
     const [searchTerm, setSearchTerm] = useState('');
 
-    // 2. State Debounce (Chỉ thay đổi sau 300ms dừng gõ)
     const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
     const { data: students = [], isLoading: loadingStudents } = useQuery({

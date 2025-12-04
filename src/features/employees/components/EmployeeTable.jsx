@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, Button, Tooltip, Tag, Space } from 'antd';
 import { EditOutlined, DeleteOutlined, CalculatorOutlined } from '@ant-design/icons';
-import { formatCurrency, formatDate } from '../../../shared/utils/format';
+import { formatCurrency, formatDate } from '@/utils/format';
 
 const EmployeeTable = ({ employees, loading, onEdit, onDelete, onGetSalary }) => {
     const columns = [

@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Card, Typography, Spin, Select, Button } from 'antd';
 import { useProjects } from './hooks/useProjects';
 import PageHeaderAction from '../../components/molecules/PageHeaderAction';
-import { PROJECT_STATUS_LABEL, PROJECT_STATUS } from '../../shared/constants';
 import { ProjectTable, ProjectStats, ProjectModal } from './components';
+import { PROJECT_STATUS, PROJECT_STATUS_LABEL } from '@/constants';
 
 const { Title } = Typography;
 const { Option } = Select;

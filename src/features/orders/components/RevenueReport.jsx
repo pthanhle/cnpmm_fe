@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table, Typography } from 'antd';
-import { formatCurrency } from '../../../shared/utils/format';
+import { formatCurrency } from '@/utils/format';
 
 const RevenueReport = ({ data }) => {
     if (!data || data.length === 0) return null;

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Modal, Form, Input, Select } from 'antd';
-import { PROJECT_STATUS, PROJECT_STATUS_LABEL } from '../../../shared/constants';
+import { PROJECT_STATUS, PROJECT_STATUS_LABEL } from '@/constants';
 
 const { Option } = Select;
 const { TextArea } = Input;
