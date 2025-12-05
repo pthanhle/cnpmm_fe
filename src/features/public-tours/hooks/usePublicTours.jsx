@@ -10,6 +10,7 @@ export const usePublicTours = () => {
 
     const [searchTerm, setSearchTerm] = useState('');
     const [page, setPage] = useState(1);
+    const [filters, setFilters] = useState({});
 
     const [isBookingModalVisible, setIsBookingModalVisible] = useState(false);
     const [selectedTour, setSelectedTour] = useState(null);
@@ -17,17 +18,21 @@ export const usePublicTours = () => {
     const debouncedSearch = useDebounce(searchTerm, 500);
 
     const { data: responseData, isLoading } = useQuery({
-        queryKey: ['public-tours', page, debouncedSearch],
-        queryFn: () => getTours({
-            page,
-            limit: 8,
-            search: debouncedSearch
-        }),
+        queryKey: ['public-tours', page, debouncedSearch, filters],
+        queryFn: () => {
+            const params = {
+                page,
+                limit: 8,
+                search: debouncedSearch,
+                ...filters
+            };
+            return getTours(params);
+        },
         keepPreviousData: true
     });
 
     const tours = responseData?.data || [];
-    const total = responseData?.total || 0;
+    const total = responseData?.meta?.total || 0;
 
     const bookingMutation = useMutation({
         mutationFn: createBooking,
@@ -41,7 +46,7 @@ export const usePublicTours = () => {
 
     const handleBookingSubmit = (values) => {
         if (!selectedTour) return;
-        bookingMutation.mutate({
+        const payload = {
             tourId: selectedTour._id,
             customerInfo: {
                 fullName: values.fullName,
@@ -50,16 +55,28 @@ export const usePublicTours = () => {
                 address: values.address
             },
             headcount: values.headcount
-        });
+        };
+        bookingMutation.mutate(payload);
     };
 
-    const handleSearch = (val) => { setSearchTerm(val); setPage(1); };
+    const handleSearch = (term) => { setSearchTerm(term); setPage(1); };
+
+    const handleFilter = (values) => {
+        const newFilters = Object.fromEntries(
+            Object.entries(values).filter(([_, v]) => v !== undefined && v !== null && v !== '')
+        );
+        setFilters(newFilters);
+        setPage(1);
+    };
+
+    const handleResetFilter = () => { setFilters({}); setPage(1); };
     const openBookingModal = (tour) => { setSelectedTour(tour); setIsBookingModalVisible(true); };
     const closeBookingModal = () => { setIsBookingModalVisible(false); setSelectedTour(null); };
 
     return {
         tours, total, isLoading, page, setPage,
         searchTerm, handleSearch,
+        handleFilter, handleResetFilter,
         isBookingModalVisible, selectedTour,
         openBookingModal, closeBookingModal,
         handleBookingSubmit, isBookingLoading: bookingMutation.isPending

@@ -1,18 +1,27 @@
 import { useState } from 'react';
 import { message } from 'antd';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getBookings, updateBookingStatus, getBookingStats } from '@/api/bookings';
+import { useSearchParams } from 'react-router-dom';
+import { getBookings, updateBookingStatus } from '@/api/bookings';
 
 export const useAdminBookings = () => {
     const queryClient = useQueryClient();
+    const [searchParams] = useSearchParams();
+
+    const rawTourId = searchParams.get('tour');
+    const tourId = rawTourId ? rawTourId : undefined;
+
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
 
-    const currentYear = new Date().getFullYear();
-
     const { data: responseData, isLoading: loadingList } = useQuery({
-        queryKey: ['admin-bookings', page, pageSize],
-        queryFn: () => getBookings({ page, limit: pageSize, sort: '-createdAt' }),
+        queryKey: ['admin-bookings', page, pageSize, tourId],
+        queryFn: () => getBookings({
+            page,
+            limit: pageSize,
+            sort: '-createdAt',
+            tour: tourId
+        }),
         keepPreviousData: true
     });
 
@@ -24,7 +33,7 @@ export const useAdminBookings = () => {
         onSuccess: () => {
             message.success('Cập nhật trạng thái thành công');
             queryClient.invalidateQueries(['admin-bookings']);
-            queryClient.invalidateQueries(['booking-stats', currentYear]);
+            queryClient.invalidateQueries(['booking-stats']);
         },
         onError: (e) => message.error(e.response?.data?.message || 'Lỗi cập nhật')
     });
@@ -43,6 +52,7 @@ export const useAdminBookings = () => {
             onChange: (p, ps) => { setPage(p); setPageSize(ps); }
         },
         isLoading: loadingList || updateMutation.isPending,
-        handleStatusChange
+        handleStatusChange,
+        filteredTourId: tourId
     };
 };

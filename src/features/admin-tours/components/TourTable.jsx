@@ -1,10 +1,13 @@
 import React from 'react';
-import { Table, Button, Space, Tag, Popconfirm, Image } from 'antd';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Table, Button, Space, Tag, Popconfirm, Image, Tooltip } from 'antd';
+import { EditOutlined, DeleteOutlined, TeamOutlined } from '@ant-design/icons';
 import { formatCurrency, formatDate } from '@/utils/format';
 import { TOUR_STATUS_COLOR, TOUR_STATUS_LABEL } from '@/constants';
+import { useNavigate } from 'react-router-dom';
 
 const TourTable = ({ tours, loading, onEdit, onDelete, pagination }) => {
+
+    const navigate = useNavigate();
     const columns = [
         {
             title: 'Ảnh',
@@ -81,20 +84,20 @@ const TourTable = ({ tours, loading, onEdit, onDelete, pagination }) => {
             align: 'center',
             render: (_, record) => (
                 <Space>
-                    <Button
-                        type="primary"
-                        ghost
-                        size="small"
-                        icon={<EditOutlined />}
-                        onClick={() => onEdit(record)}
-                    />
-                    <Popconfirm
-                        title="Xóa tour này?"
-                        description="Hành động này không thể hoàn tác."
-                        onConfirm={() => onDelete(record._id)}
-                        okText="Xóa"
-                        cancelText="Hủy"
-                    >
+                    <Tooltip title="Xem danh sách khách đặt">
+                        <Button
+                            type="default"
+                            size="small"
+                            icon={<TeamOutlined className="text-green-600" />}
+                            onClick={() => navigate(`/admin/bookings?tour=${record._id}`)}
+                        />
+                    </Tooltip>
+
+                    <Tooltip title="Sửa">
+                        <Button type="primary" ghost size="small" icon={<EditOutlined />} onClick={() => onEdit(record)} />
+                    </Tooltip>
+
+                    <Popconfirm title="Xóa?" onConfirm={() => onDelete(record._id)}>
                         <Button danger size="small" icon={<DeleteOutlined />} />
                     </Popconfirm>
                 </Space>

@@ -1,9 +1,13 @@
 import axios from 'axios';
+import qs from 'qs';
 
 const axiosClient = axios.create({
     baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api',
     headers: {
         'Content-Type': 'application/json',
+    },
+    paramsSerializer: (params) => {
+        return qs.stringify(params, { arrayFormat: 'brackets' });
     },
 });
 
