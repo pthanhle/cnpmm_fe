@@ -19,16 +19,6 @@ export const useAdminBookings = () => {
     const bookings = responseData?.data || [];
     const total = responseData?.meta?.total || 0;
 
-    const { data: statsResponse } = useQuery({
-        queryKey: ['booking-stats', currentYear],
-        queryFn: () => getBookingStats(currentYear)
-    });
-
-    const statsData = statsResponse?.data || [];
-
-    const totalRevenue = statsData.reduce((acc, curr) => acc + (curr.totalRevenue || 0), 0);
-    const totalBookings = statsData.reduce((acc, curr) => acc + (curr.numBookings || 0), 0);
-
     const updateMutation = useMutation({
         mutationFn: ({ id, status }) => updateBookingStatus(id, status),
         onSuccess: () => {
@@ -52,7 +42,6 @@ export const useAdminBookings = () => {
             showSizeChanger: true,
             onChange: (p, ps) => { setPage(p); setPageSize(ps); }
         },
-        stats: { totalRevenue, totalBookings },
         isLoading: loadingList || updateMutation.isPending,
         handleStatusChange
     };

@@ -12,14 +12,16 @@ export const useAdminStats = () => {
         keepPreviousData: true
     });
 
-    const statsData = response?.data || [];
+    const apiData = response?.data || {};
+    const monthlyStats = apiData.monthlyStats || [];
+    const statusStats = apiData.statusStats || [];
 
-    const totalRevenue = statsData.reduce((acc, curr) => acc + (curr.totalRevenue || 0), 0);
-    const totalBookings = statsData.reduce((acc, curr) => acc + (curr.numBookings || 0), 0);
+    const totalRevenue = monthlyStats.reduce((acc, curr) => acc + (curr.totalRevenue || 0), 0);
+    const totalBookings = monthlyStats.reduce((acc, curr) => acc + (curr.numBookings || 0), 0);
 
-    const monthlyData = Array.from({ length: 12 }, (_, index) => {
+    const chartData = Array.from({ length: 12 }, (_, index) => {
         const monthIndex = index + 1;
-        const found = statsData.find(item => item.month === monthIndex);
+        const found = monthlyStats.find(item => item.month === monthIndex);
         return {
             month: `Tháng ${monthIndex}`,
             revenue: found ? found.totalRevenue : 0,
@@ -27,19 +29,19 @@ export const useAdminStats = () => {
         };
     });
 
-    const labels = monthlyData.map(d => d.month);
-    const revenueDataset = monthlyData.map(d => d.revenue);
-    const bookingDataset = monthlyData.map(d => d.bookings);
+    const labels = chartData.map(d => d.month);
+    const revenueDataset = chartData.map(d => d.revenue);
+    const bookingDataset = chartData.map(d => d.bookings);
+
+    const paidCount = statusStats.find(s => s._id === 'paid')?.count || 0;
+    const canceledCount = statusStats.find(s => s._id === 'canceled')?.count || 0;
 
     return {
         year, setYear,
         totalRevenue,
         totalBookings,
-        chartData: {
-            labels,
-            revenueDataset,
-            bookingDataset
-        },
+        barChartData: { labels, revenueDataset, bookingDataset },
+        pieChartData: { paidCount, canceledCount },
         isLoading
     };
 };

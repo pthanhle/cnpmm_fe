@@ -20,7 +20,7 @@ const StatsCards = ({ totalRevenue, totalBookings }) => {
             <Col span={12} md={8}>
                 <Card className="dark:bg-[#1f1f1f] dark:border-gray-700 shadow-sm border-gray-200">
                     <Statistic
-                        title={<span className="dark:text-gray-400">Tổng Đơn Hàng</span>}
+                        title={<span className="dark:text-gray-400">Tổng Đơn Hàng Hoàn Thành</span>}
                         value={totalBookings}
                         prefix={<ShoppingCartOutlined className="text-blue-500 mr-2" />}
                         valueStyle={{ color: '#1677ff', fontWeight: 'bold' }}

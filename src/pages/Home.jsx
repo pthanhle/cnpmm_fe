@@ -58,9 +58,11 @@ const Home = () => {
                                     Xin chào, <span className="text-blue-600">{user.name}</span>
                                 </h1>
                             ) : (
-                                <Tag color="blue" className="px-3 py-1 text-sm rounded-full">
-                                    Chào mừng đến với Travel App
-                                </Tag>
+                                <div className="inline-flex items-center justify-center px-8 py-3 rounded-full dark:bg-blue-900/20 mb-6 transition-colors">
+                                    <span className="text-blue-600 dark:text-blue-400 text-6xl font-bold tracking-wide">
+                                        Chào mừng đến với Travel App
+                                    </span>
+                                </div>
                             )}
                         </div>
                     </div>
