@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTourDetail } from '../hooks/useTourDetail';
 import { formatCurrency, formatDate } from '@/utils/format';
 import { TOUR_STATUS_COLOR, TOUR_STATUS_LABEL } from '@/constants';
-import BookingModal from './BookingModal'; // Tái sử dụng Modal cũ
+import BookingModal from './BookingModal';
 
 const { Title, Paragraph } = Typography;
 
@@ -25,7 +25,6 @@ const TourDetail = () => {
     return (
         <div className="p-6 bg-gray-50 dark:bg-[#141414] min-h-screen transition-colors">
             <div className="max-w-6xl mx-auto">
-                {/* Back Button */}
                 <Button
                     type="text"
                     icon={<ArrowLeftOutlined />}
@@ -100,7 +99,6 @@ const TourDetail = () => {
 
                     <Divider className="dark:border-gray-700" />
 
-                    {/* Description */}
                     <div>
                         <Title level={4} className="dark:!text-white">Mô Tả Chi Tiết</Title>
                         <Paragraph className="text-gray-600 dark:text-gray-400 text-base leading-relaxed whitespace-pre-line">
@@ -109,7 +107,6 @@ const TourDetail = () => {
                     </div>
                 </Card>
 
-                {/* Booking Modal (Reuse) */}
                 <BookingModal
                     visible={isBookingModalVisible}
                     onCancel={closeBookingModal}

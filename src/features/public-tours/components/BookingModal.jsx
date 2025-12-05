@@ -5,7 +5,6 @@ import { formatCurrency } from '@/utils/format';
 const BookingModal = ({ visible, onCancel, onSubmit, tour, loading }) => {
     const [form] = Form.useForm();
 
-    // Reset form khi mở modal mới
     useEffect(() => {
         if (visible) {
             form.resetFields();

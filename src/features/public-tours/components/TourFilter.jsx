@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Slider, Select, Button, Typography, Form, InputNumber } from 'antd';
+import { Card, Select, Button, Typography, Form, InputNumber, Divider } from 'antd';
 import { FilterOutlined, ReloadOutlined } from '@ant-design/icons';
 
 const { Title } = Typography;
@@ -18,33 +18,73 @@ const TourFilter = ({ onFilter, onReset }) => {
     };
 
     return (
-        <Card className="dark:bg-[#1f1f1f] dark:border-gray-700 shadow-sm h-full">
+        <Card className="dark:bg-[#1f1f1f] dark:border-gray-700 shadow-sm border-gray-100 sticky top-24">
+
             <div className="flex items-center justify-between mb-4">
-                <Title level={5} className="!m-0 !text-blue-600 dark:!text-blue-400">
-                    <FilterOutlined className="mr-2" /> Bộ Lọc Tìm Kiếm
+                <Title level={5} className="!m-0 !text-blue-600 dark:!text-blue-400 flex items-center">
+                    <FilterOutlined className="mr-2" /> Bộ Lọc
                 </Title>
-                <Button type="text" size="small" icon={<ReloadOutlined />} onClick={handleReset} className="text-gray-500">
+                <Button
+                    type="text"
+                    size="small"
+                    icon={<ReloadOutlined />}
+                    onClick={handleReset}
+                    className="text-gray-500 hover:text-blue-600 dark:text-gray-400"
+                >
                     Đặt lại
                 </Button>
             </div>
 
-            <Form form={form} layout="vertical" onFinish={handleFinish}>
-                {/* Lọc theo mức giá */}
-                <Form.Item label={<span className="dark:text-gray-300">Khoảng giá (VNĐ)</span>} className="mb-4">
-                    <div className="flex gap-2 mb-2">
+            <Divider className="my-3 dark:border-gray-700" />
+
+            <Form form={form} layout="vertical" onFinish={handleFinish} className="space-y-2">
+
+                <Form.Item name="location" label={<span className="dark:text-gray-300 font-medium">Địa điểm</span>} className="mb-3">
+                    <Select
+                        showSearch
+                        placeholder="Chọn nơi đến"
+                        allowClear
+                        className="w-full"
+                        options={[
+                            { value: 'Phú Quốc', label: 'Phú Quốc' },
+                            { value: 'Đà Nẵng', label: 'Đà Nẵng' },
+                            { value: 'Hà Nội', label: 'Hà Nội' },
+                            { value: 'Sa Pa', label: 'Sa Pa' },
+                            { value: 'Hạ Long', label: 'Hạ Long' },
+                            { value: 'Đà Lạt', label: 'Đà Lạt' },
+                            { value: 'Nha Trang', label: 'Nha Trang' },
+                            { value: 'Huế', label: 'Huế' },
+                            { value: 'Hội An', label: 'Hội An' },
+                        ]}
+                    />
+                </Form.Item>
+
+                <Form.Item label={<span className="dark:text-gray-300 font-medium">Khoảng giá (VNĐ)</span>} className="mb-3">
+                    <div className="flex items-center gap-2">
                         <Form.Item name="minPrice" noStyle>
-                            <InputNumber placeholder="Từ" style={{ width: '100%' }} formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} parser={value => value.replace(/\$\s?|(,*)/g, '')} />
+                            <InputNumber
+                                placeholder="Tối thiểu"
+                                style={{ width: '100%' }}
+                                formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                                controls={false}
+                            />
                         </Form.Item>
-                        <span className="dark:text-gray-400">-</span>
+                        <span className="dark:text-gray-400 font-bold">-</span>
                         <Form.Item name="maxPrice" noStyle>
-                            <InputNumber placeholder="Đến" style={{ width: '100%' }} formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} parser={value => value.replace(/\$\s?|(,*)/g, '')} />
+                            <InputNumber
+                                placeholder="Tối đa"
+                                style={{ width: '100%' }}
+                                formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                                controls={false}
+                            />
                         </Form.Item>
                     </div>
                 </Form.Item>
 
-                {/* Lọc theo số ngày */}
-                <Form.Item name="duration" label={<span className="dark:text-gray-300">Thời lượng</span>}>
-                    <Select placeholder="Chọn số ngày" allowClear>
+                <Form.Item name="duration" label={<span className="dark:text-gray-300 font-medium">Thời lượng</span>} className="mb-6">
+                    <Select placeholder="Chọn thời gian" allowClear>
                         <Option value="1">Trong ngày</Option>
                         <Option value="2">2 ngày 1 đêm</Option>
                         <Option value="3">3 ngày 2 đêm</Option>
@@ -53,21 +93,8 @@ const TourFilter = ({ onFilter, onReset }) => {
                     </Select>
                 </Form.Item>
 
-                {/* Lọc theo địa điểm (Bổ sung cho ô Search chính) */}
-                <Form.Item name="location" label={<span className="dark:text-gray-300">Địa điểm cụ thể</span>}>
-                    <Select showSearch placeholder="Chọn điểm đến" allowClear>
-                        <Option value="Phú Quốc">Phú Quốc</Option>
-                        <Option value="Đà Nẵng">Đà Nẵng</Option>
-                        <Option value="Hà Nội">Hà Nội</Option>
-                        <Option value="Sa Pa">Sa Pa</Option>
-                        <Option value="Hạ Long">Hạ Long</Option>
-                        <Option value="Đà Lạt">Đà Lạt</Option>
-                        <Option value="Nha Trang">Nha Trang</Option>
-                    </Select>
-                </Form.Item>
-
-                <Button type="primary" htmlType="submit" block className="mt-2 font-semibold">
-                    Áp Dụng Bộ Lọc
+                <Button type="primary" htmlType="submit" block size="large" className="font-semibold shadow-sm">
+                    Áp Dụng
                 </Button>
             </Form>
         </Card>
