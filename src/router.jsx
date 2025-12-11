@@ -4,12 +4,8 @@ import Layout from "./components/templates/MainLayout";
 import Loading from "./components/atoms/Loading";
 
 const Home = lazy(() => import("./pages/Home"));
-const StudentPage = lazy(() => import("./pages/StudentPage"));
-const ProjectPage = lazy(() => import("./pages/ProjectPage"));
-const OrderPage = lazy(() => import("./pages/OrderPage"));
-const EmployeePage = lazy(() => import("./pages/EmployeePage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
-
+const InternetPage = lazy(() => import("./pages/InternetPage"));
 const Loadable = (Component) => (
     <Suspense fallback={<Loading />}>
         <Component />
@@ -27,20 +23,8 @@ const router = createBrowserRouter([
                 element: Loadable(Home)
             },
             {
-                path: "bai1/students",
-                element: Loadable(StudentPage)
-            },
-            {
-                path: "bai2/projects",
-                element: Loadable(ProjectPage)
-            },
-            {
-                path: "bai3/orders",
-                element: Loadable(OrderPage)
-            },
-            {
-                path: "bai4/employees",
-                element: Loadable(EmployeePage)
+                path: "internet-manager",
+                element: Loadable(InternetPage)
             },
             {
                 path: "*",

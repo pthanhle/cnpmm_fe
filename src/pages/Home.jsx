@@ -1,12 +1,11 @@
 import React from 'react';
-import { Card, Typography, Row, Col, Button, Avatar } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
+import { Card, Typography, Row, Col, Button, Tag } from 'antd';
+import { useNavigate } from 'react-router-dom';
 import {
-    TeamOutlined,
-    ProjectOutlined,
-    ShoppingCartOutlined,
-    IdcardOutlined,
-    ArrowRightOutlined
+    GlobalOutlined,
+    RocketOutlined,
+    ArrowRightOutlined,
+    CheckCircleFilled
 } from '@ant-design/icons';
 
 const { Title, Paragraph } = Typography;
@@ -14,103 +13,84 @@ const { Title, Paragraph } = Typography;
 const Home = () => {
     const navigate = useNavigate();
 
+    // Chỉ giữ lại Module liên quan đến dự án hiện tại
     const modules = [
         {
-            id: 1,
-            title: "Bài 1: Quản Lý Sinh Viên",
-            description: "Thêm, sửa, xóa, tìm kiếm sinh viên và thống kê điểm GPA chuyên ngành.",
-            path: "/bai1/students",
-            icon: <TeamOutlined />,
-            color: "#1890ff",
-            bgColor: "#e6f7ff"
-        },
-        {
-            id: 2,
-            title: "Bài 2: Quản Lý Dự Án",
-            description: "Theo dõi tiến độ dự án, trạng thái hoạt động và nhân sự tham gia.",
-            path: "/bai2/projects",
-            icon: <ProjectOutlined />,
-            color: "#722ed1",
-            bgColor: "#f9f0ff"
-        },
-        {
-            id: 3,
-            title: "Bài 3: Quản Lý Đơn Hàng",
-            description: "Kiểm soát đơn hàng, tính toán tổng giá trị và báo cáo doanh thu.",
-            path: "/bai3/orders",
-            icon: <ShoppingCartOutlined />,
-            color: "#52c41a",
-            bgColor: "#f6ffed"
-        },
-        {
-            id: 4,
-            title: "Bài 4: Quản Lý Nhân Viên",
-            description: "Hồ sơ nhân sự, chức vụ, phòng ban và tính toán lương thưởng.",
-            path: "/bai4/employees",
-            icon: <IdcardOutlined />,
-            color: "#fa8c16",
-            bgColor: "#fff7e6"
+            id: 'internet',
+            title: "Hệ thống Quản lý Internet",
+            description: "Giải pháp toàn diện quản lý gói cước, đăng ký hợp đồng, theo dõi thanh toán và chăm sóc khách hàng.",
+            path: "/internet-manager",
+            icon: <GlobalOutlined />,
+            color: "#0ea5e9", // Sky-500
+            bgColor: "#e0f2fe", // Sky-100
+            features: ['Quản lý Gói cước', 'Hợp đồng điện tử', 'Nhắc nợ tự động']
         }
+        // Bạn có thể thêm các module khác trong tương lai tại đây
     ];
 
     return (
-        <div className="p-8 bg-gray-50 min-h-screen">
+        <div className="p-8 bg-gray-50 dark:bg-gray-900 min-h-screen transition-colors duration-300">
             <div className="max-w-7xl mx-auto">
-                {/* Header Section */}
-                <div className="text-center mb-10">
-                    <Title level={2} style={{ color: '#1f2937', marginBottom: '0.5rem' }}>
-                        Bài tập Công Nghệ Phần Mềm Mới
+                {/* Hero Section */}
+                <div className="text-center mb-12 mt-4">
+                    <div className="inline-block p-4 rounded-full bg-sky-100 dark:bg-sky-900/30 mb-4">
+                        <RocketOutlined className="text-4xl text-sky-600 dark:text-sky-400" />
+                    </div>
+                    <Title level={1} className="!text-gray-800 dark:!text-white !mb-4">
+                        ISP Management System
                     </Title>
-                    <Paragraph type="secondary" style={{ fontSize: '1.1rem' }}>
-                        Chọn một module bên dưới để bắt đầu
+                    <Paragraph className="text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
+                        Hệ thống quản lý dịch vụ viễn thông tập trung. Tối ưu hóa quy trình vận hành và nâng cao trải nghiệm khách hàng.
                     </Paragraph>
                 </div>
 
-                {/* Modules Grid */}
-                <Row gutter={[24, 24]}>
+                <Row gutter={[32, 32]} justify="center">
                     {modules.map((module) => (
-                        <Col xs={24} sm={12} lg={6} key={module.id}>
+                        <Col xs={24} md={12} lg={10} key={module.id}>
                             <Card
                                 hoverable
-                                className="h-full flex flex-col justify-between shadow-sm hover:shadow-lg transition-shadow duration-300 border-t-4"
-                                style={{ borderTopColor: module.color }}
-                                bodyStyle={{ padding: '24px', display: 'flex', flexDirection: 'column', height: '100%' }}
+                                className="h-full border-0 shadow-lg hover:shadow-2xl transition-all duration-300 rounded-2xl overflow-hidden dark:bg-gray-800"
+                                bodyStyle={{ padding: '32px', display: 'flex', flexDirection: 'column', height: '100%' }}
                             >
-                                <div className="flex-grow">
-                                    {/* Icon Area */}
+                                <div className="flex items-start justify-between mb-6">
                                     <div
-                                        className="w-16 h-16 rounded-full flex items-center justify-center mb-4 text-3xl"
+                                        className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-sm"
                                         style={{ backgroundColor: module.bgColor, color: module.color }}
                                     >
                                         {module.icon}
                                     </div>
-
-                                    {/* Content Area */}
-                                    <Title level={4} style={{ marginBottom: '12px' }}>
-                                        {module.title}
-                                    </Title>
-                                    <Paragraph type="secondary" className="mb-6">
-                                        {module.description}
-                                    </Paragraph>
+                                    <Tag color="blue" className="mr-0 px-3 py-1 text-sm rounded-full bg-sky-100 text-sky-700 border-sky-200">
+                                        Phiên bản 1.0
+                                    </Tag>
                                 </div>
 
-                                {/* Action Area */}
-                                <div className="mt-4 pt-4 border-t border-gray-100">
-                                    <Button
-                                        type="primary"
-                                        ghost
-                                        block
-                                        icon={<ArrowRightOutlined />}
-                                        style={{
-                                            borderColor: module.color,
-                                            color: module.color
-                                        }}
-                                        onClick={() => navigate(module.path)}
-                                        className="hover:!bg-gray-50"
-                                    >
-                                        Truy Cập Ngay
-                                    </Button>
+                                <Title level={3} className="!mb-3 dark:!text-white">
+                                    {module.title}
+                                </Title>
+
+                                <Paragraph type="secondary" className="mb-8 text-base dark:text-gray-400 flex-grow">
+                                    {module.description}
+                                </Paragraph>
+
+                                <div className="space-y-3 mb-8">
+                                    {module.features.map((feature, idx) => (
+                                        <div key={idx} className="flex items-center text-gray-600 dark:text-gray-300">
+                                            <CheckCircleFilled className="text-sky-500 mr-2" />
+                                            {feature}
+                                        </div>
+                                    ))}
                                 </div>
+
+                                <Button
+                                    type="primary"
+                                    size="large"
+                                    block
+                                    icon={<ArrowRightOutlined />}
+                                    className="h-12 text-lg font-medium rounded-xl bg-sky-600 hover:!bg-sky-500 shadow-sky-200 shadow-lg border-none"
+                                    onClick={() => navigate(module.path)}
+                                >
+                                    Truy cập Hệ thống
+                                </Button>
                             </Card>
                         </Col>
                     ))}
