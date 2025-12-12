@@ -1,59 +1,83 @@
 import React from 'react';
-import { Table, Button, Tooltip, Tag } from 'antd';
+import { Table, Button, Space, Popconfirm, Typography, Skeleton } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import { formatCurrency } from '../../../utils/format';
+import dayjs from 'dayjs';
 
-const OrderTable = ({ orders, loading, onEdit, onDelete }) => {
+const { Text } = Typography;
+
+const OrderTable = ({ data, isLoading, pagination, onChange, onEdit, onDelete }) => {
     const columns = [
+        { title: 'Mã ĐH', dataIndex: 'maDH', key: 'maDH', width: 100 },
+        { title: 'Khách Hàng', dataIndex: 'khachHang', key: 'khachHang' },
         {
-            title: 'Mã Đơn',
-            dataIndex: 'orderId',
-            key: 'orderId',
-            width: 120,
-            render: (text) => <span className="font-semibold text-blue-600">{text}</span>
-        },
-        { title: 'Sản Phẩm', dataIndex: 'productName', key: 'productName', width: 250 },
-        { title: 'Số Lượng', dataIndex: 'quantity', key: 'quantity', align: 'center', width: 100 },
-        {
-            title: 'Đơn Giá',
-            dataIndex: 'price',
-            key: 'price',
-            align: 'right',
-            render: (val) => formatCurrency(val)
+            title: 'Ngày Đặt',
+            dataIndex: 'ngayDat',
+            key: 'ngayDat',
+            render: (d) => dayjs(d).format('DD/MM/YYYY HH:mm'),
+            sorter: (a, b) => new Date(a.ngayDat) - new Date(b.ngayDat),
         },
         {
             title: 'Tổng Tiền',
-            dataIndex: 'total',
-            key: 'total',
+            dataIndex: 'tongTien',
+            key: 'tongTien',
             align: 'right',
-            render: (val) => <span className="font-bold text-green-600">{formatCurrency(val)}</span>
+            render: (val) => (
+                <Text strong type="success">
+                    {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(val)}
+                </Text>
+            )
         },
         {
-            title: 'Hành Động',
+            title: 'Hành động',
             key: 'action',
-            width: 150,
-            align: 'center',
             render: (_, record) => (
-                <div className="flex justify-center gap-3">
-                    <Tooltip title="Chỉnh sửa">
-                        <Button type="primary" ghost icon={<EditOutlined />} onClick={() => onEdit(record)} />
-                    </Tooltip>
-                    <Tooltip title="Xóa">
-                        <Button danger icon={<DeleteOutlined />} onClick={() => onDelete(record._id)} />
-                    </Tooltip>
-                </div>
-            ),
-        },
+                <Space>
+                    <Button icon={<EditOutlined />} onClick={() => onEdit(record)} />
+                    <Popconfirm title="Xóa đơn hàng?" onConfirm={() => onDelete(record._id)}>
+                        <Button danger icon={<DeleteOutlined />} />
+                    </Popconfirm>
+                </Space>
+            )
+        }
     ];
+
+    const expandedRowRender = (record) => {
+        const productColumns = [
+            { title: 'Sản Phẩm', dataIndex: 'tenSP', key: 'tenSP' },
+            { title: 'Số Lượng', dataIndex: 'soLuong', key: 'soLuong' },
+            {
+                title: 'Đơn Giá',
+                dataIndex: 'gia',
+                key: 'gia',
+                render: (val) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(val)
+            },
+            {
+                title: 'Thành Tiền',
+                key: 'total',
+                render: (_, row) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(row.soLuong * row.gia)
+            }
+        ];
+        return <Table columns={productColumns} dataSource={record.sanPham} pagination={false} size="small" />;
+    };
+
+    if (isLoading && !data) {
+        return <Skeleton active paragraph={{ rows: 10 }} />;
+    }
 
     return (
         <Table
-            dataSource={orders}
             columns={columns}
+            dataSource={data}
             rowKey="_id"
-            loading={loading}
-            pagination={{ pageSize: 8, showTotal: (total) => `Tổng ${total} đơn hàng` }}
-            rowClassName="hover:bg-gray-50 cursor-pointer"
+            expandable={{ expandedRowRender }}
+            pagination={{
+                ...pagination,
+                showSizeChanger: true,
+                showTotal: (total) => `Tổng ${total} đơn hàng`,
+            }}
+            loading={isLoading}
+            onChange={onChange}
+            className="dark:bg-[#1f1f1f]"
         />
     );
 };

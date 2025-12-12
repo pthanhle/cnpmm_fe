@@ -1,85 +1,93 @@
 import React, { useEffect } from 'react';
-import { Modal, Form, Input, InputNumber, DatePicker, Row, Col } from 'antd';
+import { Modal, Form, Input, InputNumber, DatePicker, Select } from 'antd';
 import dayjs from 'dayjs';
 
-const EmployeeModal = ({ visible, onCancel, onSubmit, editingEmployee }) => {
+const EmployeeModal = ({ open, onClose, onSubmit, initialValues, loading }) => {
     const [form] = Form.useForm();
 
+    // Reset hoặc set giá trị khi mở modal
     useEffect(() => {
-        if (visible) {
-            if (editingEmployee) {
+        if (open) {
+            if (initialValues) {
                 form.setFieldsValue({
-                    ...editingEmployee,
-                    startDate: editingEmployee.startDate ? dayjs(editingEmployee.startDate) : null
+                    ...initialValues,
+                    ngayVaoLam: initialValues.ngayVaoLam ? dayjs(initialValues.ngayVaoLam) : dayjs(),
                 });
             } else {
                 form.resetFields();
+                form.setFieldsValue({ ngayVaoLam: dayjs() });
             }
         }
-    }, [visible, editingEmployee, form]);
+    }, [open, initialValues, form]);
+
+    const handleOk = async () => {
+        try {
+            const values = await form.validateFields();
+            onSubmit(values);
+        } catch (error) {
+            console.log('Validate Failed:', error);
+        }
+    };
 
     return (
         <Modal
-            title={editingEmployee ? 'Cập Nhật Nhân Viên' : 'Thêm Nhân Viên Mới'}
-            open={visible}
-            onCancel={onCancel}
-            onOk={() => form.submit()}
-            width={700} // Form nhiều trường nên để rộng hơn chút
-            okText={editingEmployee ? "Lưu Thay Đổi" : "Thêm Mới"}
+            title={initialValues ? "Sửa nhân viên" : "Thêm nhân viên"}
+            open={open}
+            onOk={handleOk}
+            onCancel={onClose}
+            confirmLoading={loading}
+            okText="Lưu"
             cancelText="Hủy"
         >
-            <Form form={form} onFinish={onSubmit} layout="vertical">
-                <Row gutter={16}>
-                    <Col span={12}>
-                        <Form.Item name="employeeId" label="Mã Nhân Viên" rules={[{ required: true }]}>
-                            <Input disabled={!!editingEmployee} placeholder="NV001" />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item name="fullName" label="Họ Tên" rules={[{ required: true }]}>
-                            <Input placeholder="Nguyễn Văn A" />
-                        </Form.Item>
-                    </Col>
-                </Row>
+            <Form form={form} layout="vertical" name="employee_form">
+                <Form.Item
+                    name="maNV"
+                    label="Mã NV"
+                    rules={[{ required: true, message: 'Vui lòng nhập mã nhân viên!' }]}
+                >
+                    <Input disabled={!!initialValues} placeholder="NV001" />
+                </Form.Item>
 
-                <Row gutter={16}>
-                    <Col span={12}>
-                        <Form.Item name="department" label="Phòng Ban" rules={[{ required: true }]}>
-                            <Input placeholder="IT, HR, Sales..." />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item name="position" label="Vị Trí / Chức Vụ" rules={[{ required: true }]}>
-                            <Input placeholder="Developer, Manager..." />
-                        </Form.Item>
-                    </Col>
-                </Row>
+                <Form.Item
+                    name="hoTen"
+                    label="Họ tên"
+                    rules={[{ required: true, message: 'Vui lòng nhập họ tên!' }]}
+                >
+                    <Input placeholder="Nguyễn Văn A" />
+                </Form.Item>
 
-                <Row gutter={16}>
-                    <Col span={12}>
-                        <Form.Item name="salary" label="Mức Lương Cơ Bản" rules={[{ required: true }]}>
-                            <InputNumber
-                                min={0}
-                                style={{ width: '100%' }}
-                                formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                            />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item name="allowances" label="Phụ Cấp">
-                            <InputNumber
-                                min={0}
-                                style={{ width: '100%' }}
-                                formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                            />
-                        </Form.Item>
-                    </Col>
-                </Row>
+                <Form.Item
+                    name="chucVu"
+                    label="Chức vụ"
+                    rules={[{ required: true, message: 'Vui lòng nhập chức vụ!' }]}
+                >
+                    <Select placeholder="Chọn chức vụ">
+                        <Select.Option value="Lập trình viên">Lập trình viên</Select.Option>
+                        <Select.Option value="Kế toán">Kế toán</Select.Option>
+                        <Select.Option value="Nhân sự">Nhân sự</Select.Option>
+                        <Select.Option value="Trưởng phòng">Trưởng phòng</Select.Option>
+                    </Select>
+                </Form.Item>
 
-                <Form.Item name="startDate" label="Ngày Bắt Đầu Làm Việc" rules={[{ required: true }]}>
-                    <DatePicker format="DD/MM/YYYY" style={{ width: '100%' }} />
+                <Form.Item
+                    name="luong"
+                    label="Lương"
+                    rules={[{ required: true, message: 'Vui lòng nhập lương!' }]}
+                >
+                    <InputNumber
+                        style={{ width: '100%' }}
+                        formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
+                        addonAfter="VND"
+                    />
+                </Form.Item>
+
+                <Form.Item
+                    name="ngayVaoLam"
+                    label="Ngày vào làm"
+                    rules={[{ required: true, message: 'Vui lòng chọn ngày!' }]}
+                >
+                    <DatePicker style={{ width: '100%' }} format="DD/MM/YYYY" />
                 </Form.Item>
             </Form>
         </Modal>

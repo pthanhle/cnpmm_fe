@@ -1,12 +1,12 @@
 import axiosClient from '../config/axiosClient';
 import { EMPLOYEE_ENDPOINTS } from './endpoints';
 
-export const getEmployees = () => {
-    return axiosClient.get(EMPLOYEE_ENDPOINTS.GET_ALL);
+export const getEmployees = (params) => {
+    return axiosClient.get(EMPLOYEE_ENDPOINTS.LIST, { params });
 };
 
 export const getEmployeeById = (id) => {
-    return axiosClient.get(EMPLOYEE_ENDPOINTS.GET_BY_ID(id));
+    return axiosClient.get(EMPLOYEE_ENDPOINTS.DETAIL(id));
 };
 
 export const createEmployee = (data) => {
@@ -19,12 +19,4 @@ export const updateEmployee = (id, data) => {
 
 export const deleteEmployee = (id) => {
     return axiosClient.delete(EMPLOYEE_ENDPOINTS.DELETE(id));
-};
-
-export const searchEmployees = (search) => {
-    return axiosClient.get(EMPLOYEE_ENDPOINTS.SEARCH, { params: { search } });
-};
-
-export const getEmployeeMonthlySalary = (id) => {
-    return axiosClient.get(EMPLOYEE_ENDPOINTS.GET_SALARY(id));
 };

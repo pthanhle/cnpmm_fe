@@ -1,90 +1,124 @@
-import React from 'react';
-import { Card, Typography, Spin, Statistic, Row, Col, Divider, DatePicker, Button } from 'antd';
-import { DollarCircleOutlined, AreaChartOutlined, BarChartOutlined } from '@ant-design/icons';
-import { useOrders } from './hooks/useOrders';
-import { formatCurrency } from '../../utils/format';
-import PageHeaderAction from '../../components/molecules/PageHeaderAction';
-import { OrderTable, RevenueReport, OrderModal } from './components';
+import React, { useState } from 'react';
+import { Card, Button, Input, DatePicker, Row, Col } from 'antd';
+import { PlusOutlined, SearchOutlined } from '@ant-design/icons';
+import { useDebounce } from '@/hooks/useDebounce';
+import OrderTable from './components/OrderTable';
+import OrderModal from './components/OrderModal';
+import { useOrders, useOrderMutation } from './hooks/useOrders';
 
-const { Title } = Typography;
+const { RangePicker } = DatePicker;
 
 const OrderFeature = () => {
-    const {
-        orders, totalValue, revenueReport, loading,
-        setStartDate, setEndDate,
-        isModalVisible, editingOrder, openModal, closeModal,
-        handleRevenueReport, handleDelete, handleFormSubmit
-    } = useOrders();
+    // 1. State Management
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+    const [keyword, setKeyword] = useState('');
+    const [dateRange, setDateRange] = useState([null, null]);
+
+    // 2. Debounce
+    const debouncedKeyword = useDebounce(keyword, 500);
+
+    // 3. Modal State
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [editingOrder, setEditingOrder] = useState(null);
+
+    // 4. API Hooks
+    const { data, isLoading } = useOrders({
+        page,
+        limit: pageSize,
+        keyword: debouncedKeyword,
+        startDate: dateRange[0] ? dateRange[0].toISOString() : undefined,
+        endDate: dateRange[1] ? dateRange[1].toISOString() : undefined,
+    });
+
+    const { create, update, remove } = useOrderMutation();
+
+    // 5. Handlers
+    const handleTableChange = (pagination) => {
+        setPage(pagination.current);
+        setPageSize(pagination.pageSize);
+    };
+
+    const handleSubmit = (values) => {
+        if (editingOrder) {
+            update.mutate({ id: editingOrder._id, data: values }, {
+                onSuccess: () => {
+                    setIsModalOpen(false);
+                    setEditingOrder(null);
+                }
+            });
+        } else {
+            create.mutate(values, {
+                onSuccess: () => setIsModalOpen(false)
+            });
+        }
+    };
+
+    const handleOpenEdit = (record) => {
+        setEditingOrder(record);
+        setIsModalOpen(true);
+    };
+
+    const handleOpenCreate = () => {
+        setEditingOrder(null);
+        setIsModalOpen(true);
+    };
 
     return (
-        <div className="p-6 bg-gray-50 min-h-screen">
-            <div className="max-w-7xl mx-auto space-y-6">
-                <div className="flex justify-between items-center mb-6">
-                    <Title level={2} style={{ margin: 0, color: '#1f2937' }}>Quản Lý Đơn Hàng</Title>
-                </div>
-
-                <Row gutter={[24, 24]}>
-                    <Col xs={24} md={8} lg={6}>
-                        <Card hoverable className="h-full flex flex-col justify-center items-center bg-white border-blue-100 shadow-sm">
-                            <Statistic
-                                title={<span className="text-gray-500 font-semibold">Tổng Doanh Thu</span>}
-                                value={totalValue}
-                                formatter={val => formatCurrency(val)} // Dùng formatter của Statistic hoặc utils
-                                valueStyle={{ color: '#2563eb', fontWeight: 'bold', fontSize: '1.5rem' }}
-                                prefix={<DollarCircleOutlined className="mr-2" />}
-                            />
-                        </Card>
+        <div className="p-6">
+            <Card
+                title="Quản lý Đơn Hàng"
+                className="shadow-lg dark:bg-[#141414] dark:border-gray-700"
+                extra={
+                    <Button type="primary" icon={<PlusOutlined />} onClick={handleOpenCreate}>
+                        Tạo Đơn Hàng
+                    </Button>
+                }
+            >
+                {/* --- Filter Section --- */}
+                <Row gutter={[16, 16]} className="mb-6">
+                    <Col xs={24} md={10}>
+                        <Input
+                            prefix={<SearchOutlined />}
+                            placeholder="Tìm tên khách hàng..."
+                            value={keyword}
+                            onChange={(e) => setKeyword(e.target.value)}
+                            allowClear
+                        />
                     </Col>
-
-                    <Col xs={24} md={16} lg={18}>
-                        <Card className="h-full shadow-sm" bodyStyle={{ padding: '24px' }}>
-                            <PageHeaderAction
-                                searchTerm=""
-                                setSearchTerm={() => { }}
-                                onSearch={() => { }}
-                                placeholder="Tính năng tìm kiếm (Coming soon)"
-                                onAdd={() => openModal(null)}
-                                btnLabel="Thêm Đơn Hàng"
-                            >
-                                <div className="flex items-center gap-2">
-                                    <span className="text-gray-500 font-medium hidden lg:inline">Báo cáo:</span>
-                                    <DatePicker
-                                        placeholder="Từ ngày"
-                                        onChange={(_, dateString) => setStartDate(dateString)}
-                                        format="YYYY-MM-DD" style={{ width: 140 }}
-                                    />
-                                    <span className="text-gray-400">-</span>
-                                    <DatePicker
-                                        placeholder="Đến ngày"
-                                        onChange={(_, dateString) => setEndDate(dateString)}
-                                        format="YYYY-MM-DD" style={{ width: 140 }}
-                                    />
-                                    <Button icon={<BarChartOutlined />} onClick={handleRevenueReport}>Xem</Button>
-                                </div>
-                            </PageHeaderAction>
-                        </Card>
+                    <Col xs={24} md={10}>
+                        <RangePicker
+                            className="w-full"
+                            format="DD/MM/YYYY"
+                            placeholder={['Từ ngày', 'Đến ngày']}
+                            onChange={(dates) => setDateRange(dates || [null, null])}
+                        />
                     </Col>
                 </Row>
 
-                <Card title="Danh Sách Đơn Hàng" className="shadow-sm mt-6">
-                    {loading ? <div className="p-10 text-center"><Spin size="large" /></div> :
-                        <OrderTable orders={orders} loading={loading} onEdit={openModal} onDelete={handleDelete} />
-                    }
-                </Card>
+                {/* --- Table Section --- */}
+                <OrderTable
+                    data={data?.data}
+                    pagination={{
+                        current: data?.meta?.current || 1,
+                        pageSize: data?.meta?.pageSize || 10,
+                        total: data?.meta?.total || 0,
+                    }}
+                    isLoading={isLoading}
+                    onChange={handleTableChange}
+                    onEdit={handleOpenEdit}
+                    onDelete={(id) => remove.mutate(id)}
+                />
+            </Card>
 
-                {revenueReport.length > 0 && (
-                    <div className="mt-10">
-                        <Divider orientation="left" style={{ borderColor: '#10b981' }}>
-                            <span className="text-green-600 font-bold text-lg"><AreaChartOutlined className="mr-2" /> Kết Quả Báo Cáo</span>
-                        </Divider>
-                        <Card className="shadow-md border-t-4 border-t-green-500 bg-green-50">
-                            <RevenueReport data={revenueReport} />
-                        </Card>
-                    </div>
-                )}
-
-                <OrderModal visible={isModalVisible} onCancel={closeModal} onSubmit={handleFormSubmit} editingOrder={editingOrder} />
-            </div>
+            {/* --- Modal Section --- */}
+            <OrderModal
+                open={isModalOpen}
+                initialValues={editingOrder}
+                onClose={() => setIsModalOpen(false)}
+                onSubmit={handleSubmit}
+                loading={create.isPending || update.isPending}
+            />
         </div>
     );
 };

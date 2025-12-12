@@ -1,121 +1,107 @@
 import React from 'react';
-import { Card, Typography, Row, Col, Button, Avatar } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
-import {
-    TeamOutlined,
-    ProjectOutlined,
-    ShoppingCartOutlined,
-    IdcardOutlined,
-    ArrowRightOutlined
-} from '@ant-design/icons';
+import { Card, Typography, Row, Col, Button, Statistic } from 'antd';
+import { ShoppingCartOutlined, UserOutlined, ArrowRightOutlined, RocketOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 
 const { Title, Paragraph } = Typography;
 
 const Home = () => {
     const navigate = useNavigate();
 
-    const modules = [
-        {
-            id: 1,
-            title: "Bài 1: Quản Lý Sinh Viên",
-            description: "Thêm, sửa, xóa, tìm kiếm sinh viên và thống kê điểm GPA chuyên ngành.",
-            path: "/bai1/students",
-            icon: <TeamOutlined />,
-            color: "#1890ff",
-            bgColor: "#e6f7ff"
-        },
-        {
-            id: 2,
-            title: "Bài 2: Quản Lý Dự Án",
-            description: "Theo dõi tiến độ dự án, trạng thái hoạt động và nhân sự tham gia.",
-            path: "/bai2/projects",
-            icon: <ProjectOutlined />,
-            color: "#722ed1",
-            bgColor: "#f9f0ff"
-        },
-        {
-            id: 3,
-            title: "Bài 3: Quản Lý Đơn Hàng",
-            description: "Kiểm soát đơn hàng, tính toán tổng giá trị và báo cáo doanh thu.",
-            path: "/bai3/orders",
-            icon: <ShoppingCartOutlined />,
-            color: "#52c41a",
-            bgColor: "#f6ffed"
-        },
-        {
-            id: 4,
-            title: "Bài 4: Quản Lý Nhân Viên",
-            description: "Hồ sơ nhân sự, chức vụ, phòng ban và tính toán lương thưởng.",
-            path: "/bai4/employees",
-            icon: <IdcardOutlined />,
-            color: "#fa8c16",
-            bgColor: "#fff7e6"
-        }
-    ];
-
     return (
-        <div className="p-8 bg-gray-50 min-h-screen">
-            <div className="max-w-7xl mx-auto">
-                {/* Header Section */}
-                <div className="text-center mb-10">
-                    <Title level={2} style={{ color: '#1f2937', marginBottom: '0.5rem' }}>
-                        Bài tập Công Nghệ Phần Mềm Mới
-                    </Title>
-                    <Paragraph type="secondary" style={{ fontSize: '1.1rem' }}>
-                        Chọn một module bên dưới để bắt đầu
-                    </Paragraph>
+        <div className="p-8 min-h-[80vh] flex flex-col items-center justify-center">
+            {/* Hero Section */}
+            <div className="text-center mb-12 max-w-2xl">
+                <div className="mb-4 inline-block p-4 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400">
+                    <RocketOutlined style={{ fontSize: '32px' }} />
                 </div>
-
-                {/* Modules Grid */}
-                <Row gutter={[24, 24]}>
-                    {modules.map((module) => (
-                        <Col xs={24} sm={12} lg={6} key={module.id}>
-                            <Card
-                                hoverable
-                                className="h-full flex flex-col justify-between shadow-sm hover:shadow-lg transition-shadow duration-300 border-t-4"
-                                style={{ borderTopColor: module.color }}
-                                bodyStyle={{ padding: '24px', display: 'flex', flexDirection: 'column', height: '100%' }}
-                            >
-                                <div className="flex-grow">
-                                    {/* Icon Area */}
-                                    <div
-                                        className="w-16 h-16 rounded-full flex items-center justify-center mb-4 text-3xl"
-                                        style={{ backgroundColor: module.bgColor, color: module.color }}
-                                    >
-                                        {module.icon}
-                                    </div>
-
-                                    {/* Content Area */}
-                                    <Title level={4} style={{ marginBottom: '12px' }}>
-                                        {module.title}
-                                    </Title>
-                                    <Paragraph type="secondary" className="mb-6">
-                                        {module.description}
-                                    </Paragraph>
-                                </div>
-
-                                {/* Action Area */}
-                                <div className="mt-4 pt-4 border-t border-gray-100">
-                                    <Button
-                                        type="primary"
-                                        ghost
-                                        block
-                                        icon={<ArrowRightOutlined />}
-                                        style={{
-                                            borderColor: module.color,
-                                            color: module.color
-                                        }}
-                                        onClick={() => navigate(module.path)}
-                                        className="hover:!bg-gray-50"
-                                    >
-                                        Truy Cập Ngay
-                                    </Button>
-                                </div>
-                            </Card>
-                        </Col>
-                    ))}
-                </Row>
+                <Title level={1} className="dark:text-white !mb-4">
+                    Hệ Thống Quản Lý Nội Bộ
+                </Title>
+                <Paragraph className="text-gray-500 dark:text-gray-400 text-lg">
+                    Chào mừng bạn đến với trang quản trị. Vui lòng chọn một trong các chức năng dưới đây để bắt đầu làm việc.
+                </Paragraph>
             </div>
+
+            {/* Quick Access Cards */}
+            <Row gutter={[24, 24]} className="w-full max-w-4xl">
+                {/* Module Đơn Hàng */}
+                <Col xs={24} md={12}>
+                    <Card
+                        hoverable
+                        className="h-full shadow-md dark:bg-[#141414] dark:border-gray-700 transition-transform duration-300 hover:-translate-y-1"
+                        bordered={false}
+                    >
+                        <div className="flex flex-col h-full">
+                            <div className="flex items-center gap-4 mb-6">
+                                <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg text-green-600 dark:text-green-400">
+                                    <ShoppingCartOutlined style={{ fontSize: '24px' }} />
+                                </div>
+                                <div>
+                                    <Title level={4} className="!m-0 dark:text-gray-200">Quản Lý Đơn Hàng</Title>
+                                    <span className="text-gray-400 text-sm">Bài tập 1</span>
+                                </div>
+                            </div>
+
+                            <Paragraph className="text-gray-500 dark:text-gray-400 flex-1">
+                                Theo dõi danh sách đơn hàng, tìm kiếm khách hàng, xem chi tiết sản phẩm và tổng doanh thu theo thời gian thực.
+                            </Paragraph>
+
+                            <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
+                                <Button
+                                    type="primary"
+                                    block
+                                    size="large"
+                                    icon={<ArrowRightOutlined />}
+                                    iconPosition="end"
+                                    onClick={() => navigate('/bai1/orders')}
+                                    className="bg-green-600 hover:bg-green-500"
+                                >
+                                    Truy cập Đơn Hàng
+                                </Button>
+                            </div>
+                        </div>
+                    </Card>
+                </Col>
+
+                {/* Module Nhân Viên */}
+                <Col xs={24} md={12}>
+                    <Card
+                        hoverable
+                        className="h-full shadow-md dark:bg-[#141414] dark:border-gray-700 transition-transform duration-300 hover:-translate-y-1"
+                        bordered={false}
+                    >
+                        <div className="flex flex-col h-full">
+                            <div className="flex items-center gap-4 mb-6">
+                                <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg text-blue-600 dark:text-blue-400">
+                                    <UserOutlined style={{ fontSize: '24px' }} />
+                                </div>
+                                <div>
+                                    <Title level={4} className="!m-0 dark:text-gray-200">Quản Lý Nhân Viên</Title>
+                                    <span className="text-gray-400 text-sm">Bài tập 2</span>
+                                </div>
+                            </div>
+
+                            <Paragraph className="text-gray-500 dark:text-gray-400 flex-1">
+                                Quản lý hồ sơ nhân viên, tra cứu chức vụ, mức lương và thực hiện các thao tác thêm/sửa/xóa nhân sự.
+                            </Paragraph>
+
+                            <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
+                                <Button
+                                    type="primary"
+                                    block
+                                    size="large"
+                                    icon={<ArrowRightOutlined />}
+                                    iconPosition="end"
+                                    onClick={() => navigate('/bai2/employees')}
+                                >
+                                    Truy cập Nhân Viên
+                                </Button>
+                            </div>
+                        </div>
+                    </Card>
+                </Col>
+            </Row>
         </div>
     );
 };

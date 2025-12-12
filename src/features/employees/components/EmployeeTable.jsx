@@ -1,49 +1,89 @@
 import React from 'react';
-import { Table, Button, Tooltip, Tag, Space } from 'antd';
-import { EditOutlined, DeleteOutlined, CalculatorOutlined } from '@ant-design/icons';
-import { formatCurrency, formatDate } from '../../../utils/format';
+import { Table, Button, Space, Tag, Popconfirm, Skeleton } from 'antd';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import dayjs from 'dayjs';
 
-const EmployeeTable = ({ employees, loading, onEdit, onDelete, onGetSalary }) => {
+const EmployeeTable = ({ data, isLoading, pagination, onChange, onEdit, onDelete }) => {
     const columns = [
         {
-            title: 'Mã NV', dataIndex: 'employeeId', key: 'employeeId', width: 100,
-            render: (text) => <span className="font-semibold text-blue-600">{text}</span>
-        },
-        { title: 'Họ Tên', dataIndex: 'fullName', key: 'fullName', width: 200, render: (text) => <span className="font-medium">{text}</span> },
-        { title: 'Vị Trí', dataIndex: 'position', key: 'position', width: 150 },
-        { title: 'Phòng Ban', dataIndex: 'department', key: 'department', render: (text) => <Tag color="geekblue">{text}</Tag> },
-        {
-            title: 'Mức Lương', dataIndex: 'salary', key: 'salary', align: 'right',
-            render: (val) => formatCurrency(val)
+            title: 'Mã NV',
+            dataIndex: 'maNV',
+            key: 'maNV',
+            width: 100,
+            fixed: 'left',
         },
         {
-            title: 'Phụ Cấp', dataIndex: 'allowances', key: 'allowances', align: 'right',
-            render: (val) => <span className="text-gray-500">{formatCurrency(val)}</span>
+            title: 'Họ Tên',
+            dataIndex: 'hoTen',
+            key: 'hoTen',
         },
         {
-            title: 'Ngày Vào Làm', dataIndex: 'startDate', key: 'startDate', align: 'center',
-            render: (text) => formatDate(text)
+            title: 'Chức Vụ',
+            dataIndex: 'chucVu',
+            key: 'chucVu',
+            render: (text) => <Tag color="blue">{text}</Tag>,
         },
         {
-            title: 'Hành Động', key: 'action', width: 180, align: 'center',
+            title: 'Lương',
+            dataIndex: 'luong',
+            key: 'luong',
+            render: (val) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(val),
+            align: 'right',
+        },
+        {
+            title: 'Ngày Vào',
+            dataIndex: 'ngayVaoLam',
+            key: 'ngayVaoLam',
+            render: (date) => dayjs(date).format('DD/MM/YYYY'),
+        },
+        {
+            title: 'Hành động',
+            key: 'action',
+            width: 120,
+            fixed: 'right',
             render: (_, record) => (
-                <Space>
-                    <Tooltip title="Xem lương">
-                        <Button icon={<CalculatorOutlined />} onClick={() => onGetSalary(record._id)} className="text-green-600 border-green-600 hover:text-white hover:bg-green-600" />
-                    </Tooltip>
-                    <Tooltip title="Sửa">
-                        <Button type="primary" ghost icon={<EditOutlined />} onClick={() => onEdit(record)} />
-                    </Tooltip>
-                    <Tooltip title="Xóa">
-                        <Button danger icon={<DeleteOutlined />} onClick={() => onDelete(record._id)} />
-                    </Tooltip>
+                <Space size="small">
+                    <Button
+                        type="primary"
+                        ghost
+                        icon={<EditOutlined />}
+                        size="small"
+                        onClick={() => onEdit(record)}
+                    />
+                    <Popconfirm
+                        title="Xóa nhân viên"
+                        description="Bạn có chắc chắn muốn xóa?"
+                        onConfirm={() => onDelete(record._id)}
+                        okText="Có"
+                        cancelText="Không"
+                    >
+                        <Button danger icon={<DeleteOutlined />} size="small" />
+                    </Popconfirm>
                 </Space>
             ),
         },
     ];
 
+    // UX: Hiển thị Skeleton khi data chưa có (lần đầu)
+    if (isLoading && !data) {
+        return <Skeleton active paragraph={{ rows: 10 }} />;
+    }
+
     return (
-        <Table dataSource={employees} columns={columns} rowKey="_id" loading={loading} pagination={{ pageSize: 8 }} rowClassName="hover:bg-gray-50 cursor-pointer" />
+        <Table
+            columns={columns}
+            dataSource={data}
+            rowKey="_id"
+            pagination={{
+                ...pagination,
+                showSizeChanger: true,
+                showTotal: (total) => `Tổng ${total} nhân viên`,
+            }}
+            loading={isLoading}
+            onChange={onChange}
+            scroll={{ x: 800 }}
+            className="dark:bg-[#1f1f1f]" // Tailwind support for dark mode container
+        />
     );
 };
 
